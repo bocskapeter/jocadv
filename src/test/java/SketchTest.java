@@ -22,11 +22,8 @@ public class SketchTest {
         s.addGeometry(point2);
         Line3D line = new Line3D(point1,point2);
         s.addGeometry(line);
-        System.out.println("Sketch: " + s.toString()+" DOF: " + s.getPoints().size()*3);
-        System.out.println("Tolerance: " + Value.TOLERANCE);
         PointToPlaneDistance distance1 = new PointToPlaneDistance(point2,Plane3D.YZ,new Value(Value.USER_INPUT,5.0), Const.USER);
         s.addConstraint(distance1);
-        System.out.println("Sketch: " + s.toString()+" DOF: " + s.getPoints().size()*3);
     }
 
 }

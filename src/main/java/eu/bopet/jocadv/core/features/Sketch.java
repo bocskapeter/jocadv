@@ -9,6 +9,7 @@ import eu.bopet.jocadv.core.geometries.Plane3D;
 import eu.bopet.jocadv.core.solver.Solver;
 import eu.bopet.jocadv.core.vector.Value;
 import eu.bopet.jocadv.core.vector.Vector3D;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -22,6 +23,7 @@ public class Sketch {
     private final Set<Geometry> references;
     private boolean inEdit;
     private Plane3D sketchPlane;
+    private Solver solver;
 
     private Sketch() {
         super();
@@ -29,6 +31,7 @@ public class Sketch {
         this.constraints = new LinkedHashSet<>();
         this.references = new LinkedHashSet<>();
         this.inEdit = true;
+        this.solver = new Solver(this);
     }
 
     public Sketch(final Plane3D plane) {
@@ -79,7 +82,7 @@ public class Sketch {
 
     public void addConstraint(Constraint constraint) {
         Constraint c = isNewConstraint(constraint);
-        if (c==null){
+        if (c == null) {
             this.constraints.add(constraint);
             for (Geometry geometry : constraint.getGeometries()) {
                 if (!geometries.contains(geometry)) {
@@ -88,7 +91,7 @@ public class Sketch {
                 }
             }
             if (constraint.getType() == Const.USER) {
-                if (Solver.solve(this)) {
+                if (solver.solve()) {
                     constrained();
                 } else {
                     restore();
@@ -96,13 +99,13 @@ public class Sketch {
                 }
             }
         } else {
-            
+
         }
     }
 
     private Constraint isNewConstraint(Constraint constraint) {
-        for (Constraint c : constraints){
-            if(c.getClass().equals(constraint.getClass())){
+        for (Constraint c : constraints) {
+            if (c.getClass().equals(constraint.getClass())) {
                 List gOld = c.getGeometries();
                 List gNew = constraint.getGeometries();
                 if (new HashSet<>(gOld).equals(new HashSet(gNew))) return c;
@@ -140,10 +143,10 @@ public class Sketch {
         return references;
     }
 
-    public Set<Vector3D> getPoints(){
+    public Set<Vector3D> getPoints() {
         Set<Vector3D> result = new HashSet<>();
-        for (Geometry g:geometries){
-            if (g instanceof Vector3D){
+        for (Geometry g : geometries) {
+            if (g instanceof Vector3D) {
                 result.add((Vector3D) g);
             }
         }

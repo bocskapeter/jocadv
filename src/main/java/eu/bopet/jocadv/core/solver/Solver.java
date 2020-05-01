@@ -9,8 +9,8 @@ import java.util.*;
 public class Solver {
 
     private static final int MAX_ITERATIONS = 300;
-    private static final double INTERVAL = 0.0000000001;
-    private static final double ALPHA = 0.0000001;
+    private static final double INTERVAL = 0.0000001;
+    private static final double ALPHA = 0.1;
     private static Random r = new Random();
 
     Sketch sketch;
@@ -25,30 +25,34 @@ public class Solver {
     double[] dFxk1;
     double[] yk;
 
-    private Solver(Sketch sketch) {
+    public Solver(Sketch sketch) {
         this.sketch = sketch;
     }
 
-    private boolean solve() {
+    public boolean solve() {
         xn = getXn().toArray(new Value[0]);
         size = xn.length;
         inverseBk = getIdentity();
         map = getMap();
 
-        dFxk = getDFxK();
-        pk = getPk();
-        alphaK = getAlphaK();
-        sk = getSk();
-        updateXn();
-        dFxk1 = getDFxK();
-        yk = getYk();
-        inverseBk = updateInverseBk();
-        return false;
+        for (int i = 0; i < 3; i++) {
+            dFxk = getDFxK();
+            pk = getPk();
+            alphaK = getAlphaK();
+            sk = getSk();
+            updateXn();
+            System.out.println("Sketch: " + i+" ... " + sketch.toString()+" DOF: " + sketch.getPoints().size()*3);
+            dFxk1 = getDFxK();
+            yk = getYk();
+            inverseBk = updateInverseBk();
+        }
+        return true;
     }
 
     private double[][] updateInverseBk() {
         double[][] result = new double[size][size];
         double skTyk = getSkTYk();
+        System.out.println("skTyk: " + skTyk);
         double[] ykTInverseBk = getYkTInverseBk();
         double ykTInverseBkYk = getYkTInverseBkYk(ykTInverseBk);
         double[][] skSkT = getSkSkT();
