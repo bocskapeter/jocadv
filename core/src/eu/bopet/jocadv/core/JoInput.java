@@ -166,13 +166,16 @@ public class JoInput implements InputProcessor {
 
         System.out.println("center of rotation: " + centerOfRotation + " distance: " + plane.distance(centerOfRotation));
 
+
         newPosition = new Vector3(position);
         newPosition = newPosition.add(centerOfRotation);
         newPosition = newPosition.rotate(up, -dx);
+        cross = cross.rotate(up, -dx);
 
         Vector3 newPosition2 = new Vector3(position);
         newPosition2 = newPosition2.add(centerOfRotation);
         newPosition2 = newPosition2.rotate(cross, dy);
+        up = up.rotate(cross,dy);
 
         newPosition = newPosition.add(newPosition2);
 
