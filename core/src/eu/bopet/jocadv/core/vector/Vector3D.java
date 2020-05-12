@@ -7,9 +7,9 @@ import java.util.List;
 public class Vector3D implements Geometry {
 
     public static final Vector3D ORIGIN = new Vector3D(Value.ZERO, Value.ZERO, Value.ZERO);
-    public static final Vector3D X_AXIS = new Vector3D(Value.ONE, Value.ZERO, Value.ZERO);
-    public static final Vector3D Y_AXIS = new Vector3D(Value.ZERO, Value.ONE, Value.ZERO);
-    public static final Vector3D Z_AXIS = new Vector3D(Value.ZERO, Value.ZERO, Value.ONE);
+    public static final Vector3D X = new Vector3D(Value.ONE, Value.ZERO, Value.ZERO);
+    public static final Vector3D Y = new Vector3D(Value.ZERO, Value.ONE, Value.ZERO);
+    public static final Vector3D Z = new Vector3D(Value.ZERO, Value.ZERO, Value.ONE);
 
     private Value x;
     private Value y;

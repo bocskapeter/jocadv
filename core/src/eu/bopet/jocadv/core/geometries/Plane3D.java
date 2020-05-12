@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Plane3D implements Geometry {
 
-    public static final Plane3D XY = new Plane3D(Vector3D.Z_AXIS, Value.ZERO);
-    public static final Plane3D XZ = new Plane3D(Vector3D.Y_AXIS, Value.ZERO);
-    public static final Plane3D YZ = new Plane3D(Vector3D.X_AXIS, Value.ZERO);
+    public static final Plane3D XY = new Plane3D(Vector3D.Z, Value.ZERO);
+    public static final Plane3D XZ = new Plane3D(Vector3D.Y, Value.ZERO);
+    public static final Plane3D YZ = new Plane3D(Vector3D.X, Value.ZERO);
 
     private Vector3D n;
     private Value d;

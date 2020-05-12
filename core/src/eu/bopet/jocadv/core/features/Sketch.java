@@ -15,7 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Sketch {
+public class Sketch implements Geometry{
     private final Set<Geometry> geometries;
     private final Set<Constraint> constraints;
     private final Set<Geometry> references;
@@ -112,13 +112,18 @@ public class Sketch {
         return null;
     }
 
-    private void restore() {
+    public void restore() {
         for (Geometry geometry : geometries) {
             geometry.restore();
         }
     }
 
-    private void constrained() {
+    @Override
+    public int getDOF() {
+        return 0;
+    }
+
+    public void constrained() {
         for (Geometry geometry : geometries) {
             geometry.constrained();
         }
@@ -141,14 +146,24 @@ public class Sketch {
         return references;
     }
 
-    public Set<Vector3D> getPoints() {
+    @Override
+    public List<Value> getValues() {
+        return null;
+    }
+
+    public List<Vector3D> getPoints() {
         Set<Vector3D> result = new HashSet<>();
         for (Geometry g : geometries) {
             if (g instanceof Vector3D) {
                 result.add((Vector3D) g);
             }
         }
-        return result;
+        return (List<Vector3D>) result;
+    }
+
+    @Override
+    public void setStatus(short status) {
+
     }
 
     @Override
