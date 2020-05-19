@@ -56,14 +56,7 @@ project(":desktop") {
 project(":core") {
     apply plugin: "java"
 
-    sourceSets {
-        main {
-            resources {
-                srcDirs "assets"
-            }
-        }
-    }
-
+    sourceSets.main.resources.srcDirs "assets"
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
