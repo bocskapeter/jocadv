@@ -3,6 +3,8 @@ package eu.bopet.jocadv;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -17,6 +19,10 @@ public class JoCADv extends ApplicationAdapter {
 
 	private float rotationSpeed;
 
+	private SpriteBatch spriteBatch;
+	private BitmapFont font;
+	private String text;
+
 	public ModelBatch modelBatch;
 	public Model axisX;
 	public Model axisY;
@@ -30,6 +36,9 @@ public class JoCADv extends ApplicationAdapter {
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+		spriteBatch = new SpriteBatch();
+		font = new BitmapFont(Gdx.files.internal("jocadv.fnt"));
 
 		rotationSpeed = 0.5f;
 
@@ -70,6 +79,11 @@ public class JoCADv extends ApplicationAdapter {
 		modelBatch.render(instanceY, environment);
 		modelBatch.render(instanceZ, environment);
 		modelBatch.end();
+
+		spriteBatch.begin();
+		text = "FPS: " + Gdx.graphics.getFramesPerSecond();
+		font.draw(spriteBatch,text,10,Gdx.graphics.getHeight()-10);
+		spriteBatch.end();
 
 	}
 
