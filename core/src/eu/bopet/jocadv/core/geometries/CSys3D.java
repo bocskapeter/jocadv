@@ -1,13 +1,15 @@
 package eu.bopet.jocadv.core.geometries;
 
 import eu.bopet.jocadv.core.Geometry;
+import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.vector.Value;
 import eu.bopet.jocadv.core.vector.Vector3D;
 
 import java.util.List;
 
-public class CSys3D implements Geometry {
-    private static final CSys3D DEFAULT = new CSys3D(Vector3D.ORIGIN,Axis3D.X,Axis3D.Y,Axis3D.Z,Plane3D.YZ,Plane3D.XZ,Plane3D.XY);
+public class CSys3D implements Geometry, Feature {
+    public static final CSys3D DEFAULT = new CSys3D(Vector3D.ORIGIN,Axis3D.X,Axis3D.Y,Axis3D.Z,Plane3D.YZ,Plane3D.XZ,Plane3D.XY);
+
     private Vector3D origin;
     private Axis3D xAxis;
     private Axis3D yAxis;

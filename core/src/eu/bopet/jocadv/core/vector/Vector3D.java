@@ -1,10 +1,12 @@
 package eu.bopet.jocadv.core.vector;
 
 import eu.bopet.jocadv.core.Geometry;
+import eu.bopet.jocadv.core.features.Feature;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vector3D implements Geometry {
+public class Vector3D implements Geometry, Feature {
 
     public static final Vector3D ORIGIN = new Vector3D(Value.ZERO, Value.ZERO, Value.ZERO);
     public static final Vector3D X = new Vector3D(Value.ONE, Value.ZERO, Value.ZERO);
@@ -186,7 +188,7 @@ public class Vector3D implements Geometry {
 
     /**
      *
-     * @return the index of the largest value of x,y,z
+     * @return the index of the largest value of x, y, z --> (0, 1, 2)
      */
     public int getMainDirection() {
         return x.getValue() < y.getValue() ? (y.getValue() < z.getValue() ? 2 : 1)

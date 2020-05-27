@@ -10,14 +10,18 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import eu.bopet.jocadv.core.Part;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JoCADv extends ApplicationAdapter {
 
-	public Environment environment;
+	private List<Part> parts;
+	private Part currentPart;
 
+	private Environment environment;
 	private OrthographicCamera cam;
-
-	private float rotationSpeed;
 
 	private SpriteBatch spriteBatch;
 	private BitmapFont font;
@@ -33,14 +37,16 @@ public class JoCADv extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+
+		parts = new ArrayList<>();
+		currentPart = new Part();
+
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
 		spriteBatch = new SpriteBatch();
 		font = new BitmapFont(Gdx.files.internal("jocadv.fnt"));
-
-		rotationSpeed = 0.5f;
 
 		modelBatch = new ModelBatch();
 
@@ -82,9 +88,9 @@ public class JoCADv extends ApplicationAdapter {
 
 		spriteBatch.begin();
 		text = "FPS: " + Gdx.graphics.getFramesPerSecond();
+
 		font.draw(spriteBatch,text,10,Gdx.graphics.getHeight()-10);
 		spriteBatch.end();
-
 	}
 
 	@Override

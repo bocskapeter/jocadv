@@ -1,12 +1,13 @@
 package eu.bopet.jocadv.core.geometries;
 
 import eu.bopet.jocadv.core.Geometry;
+import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.vector.Value;
 import eu.bopet.jocadv.core.vector.Vector3D;
 
 import java.util.List;
 
-public class Axis3D implements Geometry {
+public class Axis3D implements Geometry, Feature {
 
     public static final Axis3D X = new Axis3D(Vector3D.ORIGIN, Vector3D.X);
     public static final Axis3D Y = new Axis3D(Vector3D.ORIGIN, Vector3D.Y);

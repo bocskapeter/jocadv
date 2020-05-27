@@ -1,12 +1,13 @@
 package eu.bopet.jocadv.core.geometries;
 
 import eu.bopet.jocadv.core.Geometry;
+import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.vector.Value;
 import eu.bopet.jocadv.core.vector.Vector3D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Plane3D implements Geometry {
+public class Plane3D implements Geometry, Feature {
 
     public static final Plane3D XY = new Plane3D(Vector3D.Z, Value.ZERO);
     public static final Plane3D XZ = new Plane3D(Vector3D.Y, Value.ZERO);

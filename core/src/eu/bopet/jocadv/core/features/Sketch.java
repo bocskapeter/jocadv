@@ -15,7 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Sketch implements Geometry{
+public class Sketch implements Geometry, Feature{
     private final Set<Geometry> geometries;
     private final Set<Constraint> constraints;
     private final Set<Geometry> references;
