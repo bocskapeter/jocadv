@@ -17,92 +17,92 @@ import java.util.List;
 
 public class JoCADv extends ApplicationAdapter {
 
-	private List<Part> parts;
-	private Part currentPart;
+    private List<Part> parts;
+    private Part currentPart;
 
-	private Environment environment;
-	private OrthographicCamera cam;
+    private Environment environment;
+    private OrthographicCamera cam;
 
-	private SpriteBatch spriteBatch;
-	private BitmapFont font;
-	private String text;
+    private SpriteBatch spriteBatch;
+    private BitmapFont font;
+    private String text;
 
-	public ModelBatch modelBatch;
-	public Model axisX;
-	public Model axisY;
-	public Model axisZ;
-	public ModelInstance instanceX;
-	public ModelInstance instanceY;
-	public ModelInstance instanceZ;
-	
-	@Override
-	public void create () {
+    public ModelBatch modelBatch;
+    public Model axisX;
+    public Model axisY;
+    public Model axisZ;
+    public ModelInstance instanceX;
+    public ModelInstance instanceY;
+    public ModelInstance instanceZ;
 
-		parts = new ArrayList<>();
-		currentPart = new Part();
+    @Override
+    public void create() {
 
-		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        parts = new ArrayList<>();
+        currentPart = new Part();
 
-		spriteBatch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("jocadv.fnt"));
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-		modelBatch = new ModelBatch();
+        spriteBatch = new SpriteBatch();
+        font = new BitmapFont(Gdx.files.internal("jocadv.fnt"));
 
-		cam = new OrthographicCamera(640, 640 * (Gdx.graphics.getHeight() / Gdx.graphics.getWidth()));
+        modelBatch = new ModelBatch();
 
-		cam.position.set(100f, 100f, 100f);
-		cam.lookAt(0,0,0);
-		cam.near = -3000f;
-		cam.far = 3000f;
-		cam.update();
+        cam = new OrthographicCamera(640, 640 * (Gdx.graphics.getHeight() / Gdx.graphics.getWidth()));
 
-		JoInput input = new JoInput(cam);
-		Gdx.input.setInputProcessor(input);
+        cam.position.set(100f, 100f, 100f);
+        cam.lookAt(0, 0, 0);
+        cam.near = -3000f;
+        cam.far = 3000f;
+        cam.update();
 
-		ModelBuilder modelBuilder = new ModelBuilder();
-		axisX = modelBuilder.createArrow(new Vector3(0,0,0), new Vector3(200,0,0),
-				new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position);
-		axisY = modelBuilder.createArrow(new Vector3(0,0,0), new Vector3(0,200,0),
-				new Material(ColorAttribute.createDiffuse(Color.GREEN)), VertexAttributes.Usage.Position);
-		axisZ = modelBuilder.createArrow(new Vector3(0,0,0), new Vector3(0,0,200),
-				new Material(ColorAttribute.createDiffuse(Color.BLUE)), VertexAttributes.Usage.Position);
-		instanceX = new ModelInstance(axisX);
-		instanceY = new ModelInstance(axisY);
-		instanceZ = new ModelInstance(axisZ);
-	}
+        JoInput input = new JoInput(cam, Vector3.Zero);
+        Gdx.input.setInputProcessor(input);
 
-	@Override
-	public void render () {
+        ModelBuilder modelBuilder = new ModelBuilder();
+        axisX = modelBuilder.createArrow(new Vector3(0, 0, 0), new Vector3(200, 0, 0),
+                new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position);
+        axisY = modelBuilder.createArrow(new Vector3(0, 0, 0), new Vector3(0, 200, 0),
+                new Material(ColorAttribute.createDiffuse(Color.GREEN)), VertexAttributes.Usage.Position);
+        axisZ = modelBuilder.createArrow(new Vector3(0, 0, 0), new Vector3(0, 0, 200),
+                new Material(ColorAttribute.createDiffuse(Color.BLUE)), VertexAttributes.Usage.Position);
+        instanceX = new ModelInstance(axisX);
+        instanceY = new ModelInstance(axisY);
+        instanceZ = new ModelInstance(axisZ);
+    }
 
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		cam.update();
+    @Override
+    public void render() {
 
-		modelBatch.begin(cam);
-		modelBatch.render(instanceX, environment);
-		modelBatch.render(instanceY, environment);
-		modelBatch.render(instanceZ, environment);
-		modelBatch.end();
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        cam.update();
 
-		spriteBatch.begin();
-		text = "FPS: " + Gdx.graphics.getFramesPerSecond();
+        modelBatch.begin(cam);
+        modelBatch.render(instanceX, environment);
+        modelBatch.render(instanceY, environment);
+        modelBatch.render(instanceZ, environment);
+        modelBatch.end();
 
-		font.draw(spriteBatch,text,10,Gdx.graphics.getHeight()-10);
-		spriteBatch.end();
-	}
+        spriteBatch.begin();
+        text = "FPS: " + Gdx.graphics.getFramesPerSecond();
 
-	@Override
-	public void dispose () {
-		modelBatch.dispose();
-		axisX.dispose();
-	}
+        font.draw(spriteBatch, text, 10, Gdx.graphics.getHeight() - 10);
+        spriteBatch.end();
+    }
 
-	@Override
-	public void resize(int width, int height) {
-		cam.viewportWidth = 640;
-		cam.viewportHeight = 640 * height/width;
-		cam.update();
-	}
+    @Override
+    public void dispose() {
+        modelBatch.dispose();
+        axisX.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        cam.viewportWidth = 640;
+        cam.viewportHeight = 640 * height / width;
+        cam.update();
+    }
 }

@@ -9,14 +9,13 @@ import com.badlogic.gdx.math.collision.Ray;
 
 public class JoInput implements InputProcessor {
 
-    private static final float viewPortLimit = Float.MIN_VALUE * 2;
     private static final float zoomFactor = 10;
-    private static final float rotateFactor = 400;
+    private static final float rotateFactor = 2;
 
 
     private OrthographicCamera camera;
-    private int mouseX = -1;
-    private int mouseY = -1;
+    private int rotateX = -1;
+    private int rotateY = -1;
     private int clickX = -1;
     private int clickY = -1;
     private int dx = -1;
@@ -27,7 +26,7 @@ public class JoInput implements InputProcessor {
     private Vector3 position = new Vector3();
     private Vector3 direction = new Vector3();
     private Vector3 newPosition = new Vector3();
-    private Vector3 centerOfRotation = new Vector3();
+    private Vector3 centerOfRotation;
     private float viewportWidth;
     private float viewportHeight;
     private float width;
@@ -38,8 +37,9 @@ public class JoInput implements InputProcessor {
     private Ray pickingRay;
 
 
-    public JoInput(OrthographicCamera camera) {
+    public JoInput(OrthographicCamera camera, Vector3 centerOfRotation) {
         this.camera = camera;
+        this.centerOfRotation = centerOfRotation;
         ratio = ((float) Gdx.graphics.getHeight()) / ((float) Gdx.graphics.getWidth());
     }
 
@@ -112,17 +112,20 @@ public class JoInput implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         clickX = screenX;
         clickY = screenY;
-        if (button == Input.Buttons.LEFT) {
+        rotateX = 0;
+        rotateY = 0;
+        clickedButton = button;
+        if (clickedButton == Input.Buttons.LEFT) {
+            // TODO: Select objects
             return true;
         }
-        clickedButton = button;
         position = new Vector3(camera.position);
         direction = new Vector3(camera.direction);
         up = new Vector3(camera.up);
         cross = new Vector3();
         cross = cross.add(up);
         cross = cross.crs(direction);
-        pickingRay = camera.getPickRay(clickX,clickY);
+        pickingRay = camera.getPickRay(clickX, clickY);
         return true;
     }
 
@@ -148,26 +151,16 @@ public class JoInput implements InputProcessor {
     }
 
     private void rotate(int dx, int dy) {
-        centerOfRotation = new Vector3();
-        centerOfRotation = centerOfRotation.add(position);
-        centerOfRotation = centerOfRotation.scl(-1.0f).nor();
-        scale2Rotate = centerOfRotation.dot(direction);
-        centerOfRotation = new Vector3();
-        centerOfRotation = centerOfRotation.add(direction);
-        centerOfRotation = centerOfRotation.scl(scale2Rotate * position.len());
-        centerOfRotation = centerOfRotation.add(position);
+        rotateX = rotateX - dx;
+        rotateY = rotateY - dy;
+        camera.rotateAround(centerOfRotation, camera.up, rotateX / rotateFactor);
+        up = new Vector3(camera.up);
+        direction = new Vector3(camera.direction);
+        cross = up.crs(direction);
+        camera.rotateAround(centerOfRotation, cross, -rotateY / rotateFactor);
+        rotateX = dx;
+        rotateY = dy;
 
-        newPosition = new Vector3(position);
-        newPosition = newPosition.sub(centerOfRotation);
-        newPosition = newPosition.rotate(up, -(dx*rotateFactor)/Gdx.graphics.getWidth());
-        newPosition = newPosition.add(centerOfRotation);
-
-        newPosition = newPosition.sub(centerOfRotation);
-        newPosition = newPosition.rotate(cross, (dy*rotateFactor)/Gdx.graphics.getHeight());
-        newPosition = newPosition.add(centerOfRotation);
-
-        camera.position.set(newPosition);
-        camera.lookAt(centerOfRotation);
     }
 
     private void move(int dx, int dy) {
@@ -176,12 +169,10 @@ public class JoInput implements InputProcessor {
         cross = new Vector3();
         cross = cross.add(up);
         cross = cross.crs(direction);
-
         up.scl(dy);
         up.scl(camera.viewportHeight / (float) Gdx.graphics.getHeight());
         cross.scl(dx);
         cross.scl(camera.viewportWidth / (float) Gdx.graphics.getWidth());
-
         newPosition = newPosition.add(up);
         newPosition = newPosition.add(cross);
         camera.position.set(newPosition);
@@ -194,24 +185,7 @@ public class JoInput implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        position = new Vector3(camera.position);
-        direction = new Vector3(camera.direction);
-        mouseX = Gdx.input.getX();
-        mouseY = Gdx.input.getY();
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
-        viewportWidth = camera.viewportWidth;
-        viewportHeight = camera.viewportHeight;
 
-        zoom = (zoomFactor + amount) / zoomFactor;
-        camera.viewportWidth = camera.viewportWidth * zoom;
-        if (camera.viewportWidth < Float.MIN_VALUE) {
-            camera.viewportWidth = viewPortLimit;
-        }
-        camera.viewportHeight = camera.viewportWidth * ratio;
-        float moveX = (mouseX - (width / 2.0f)) * amount / zoomFactor;
-        float moveY = (mouseY - (height / 2.0f)) * amount / zoomFactor;
-        move((int) (moveX), (int) (moveY));
         return true;
     }
 }
