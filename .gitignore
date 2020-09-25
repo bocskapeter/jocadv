@@ -1,0 +1,7 @@
+/.gradle/
+/.idea/
+/core/build/
+/core/out/
+/desktop/build/
+/desktop/out/
+/gradle/

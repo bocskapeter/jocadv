@@ -115,6 +115,7 @@ public class JoInput implements InputProcessor {
         rotateX = 0;
         rotateY = 0;
         clickedButton = button;
+        pickingRay = camera.getPickRay(clickX, clickY);
         if (clickedButton == Input.Buttons.LEFT) {
             // TODO: Select objects
             return true;
@@ -125,7 +126,6 @@ public class JoInput implements InputProcessor {
         cross = new Vector3();
         cross = cross.add(up);
         cross = cross.crs(direction);
-        pickingRay = camera.getPickRay(clickX, clickY);
         return true;
     }
 
@@ -186,6 +186,9 @@ public class JoInput implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
+        int mouseX = Gdx.input.getX();
+        int mouseY = Gdx.input.getY();
+
 
         return true;
     }
