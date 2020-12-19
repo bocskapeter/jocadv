@@ -5,11 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import eu.bopet.jocadv.core.JoColors;
 import eu.bopet.jocadv.core.Part;
 
 import java.util.ArrayList;
@@ -46,11 +48,19 @@ public class JoCADv extends ApplicationAdapter {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
         spriteBatch = new SpriteBatch();
-        font = new BitmapFont(Gdx.files.internal("jocadv.fnt"));
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Isonorm-3098-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 18;
+        parameter.borderColor = JoColors.FONT_BORDER;
+        parameter.color = JoColors.FONT;
+        parameter.borderWidth = 2;
+        font = generator.generateFont(parameter);
+        generator.dispose();
 
         modelBatch = new ModelBatch();
 
-        cam = new OrthographicCamera(640, 640 * (Gdx.graphics.getHeight() / Gdx.graphics.getWidth()));
+        cam = new OrthographicCamera(640, 640 * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
 
         cam.position.set(100f, 100f, 100f);
         cam.lookAt(0, 0, 0);
@@ -77,6 +87,7 @@ public class JoCADv extends ApplicationAdapter {
     public void render() {
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClearColor(JoColors.BACKGROUND.r, JoColors.BACKGROUND.g, JoColors.BACKGROUND.b, JoColors.BACKGROUND.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         cam.update();
 
@@ -88,6 +99,7 @@ public class JoCADv extends ApplicationAdapter {
 
         spriteBatch.begin();
         text = "FPS: " + Gdx.graphics.getFramesPerSecond();
+        text = text + "\n" + FreeTypeFontGenerator.DEFAULT_CHARS;
 
         font.draw(spriteBatch, text, 10, Gdx.graphics.getHeight() - 10);
         spriteBatch.end();
@@ -102,7 +114,7 @@ public class JoCADv extends ApplicationAdapter {
     @Override
     public void resize(int width, int height) {
         cam.viewportWidth = 640;
-        cam.viewportHeight = 640 * height / width;
+        cam.viewportHeight = 640 * (float) height / (float) width;
         cam.update();
     }
 }

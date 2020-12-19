@@ -1,5 +1,6 @@
 package eu.bopet.jocadv.core;
 
+import eu.bopet.jocadv.core.features.Sketch;
 import eu.bopet.jocadv.core.geometries.Axis3D;
 import eu.bopet.jocadv.core.geometries.CSys3D;
 import eu.bopet.jocadv.core.geometries.Line3D;
@@ -24,8 +25,8 @@ public class Commands {
         registerCommand("csys", CSys3D.class);
         registerCommand("plane", Plane3D.class);
         registerCommand("line", Line3D.class);
-
-
+        registerCommand("sketch", Sketch.class);
+        registerCommand("part", Part.class);
     }
 
     public void registerCommand(String name, Class c) {
