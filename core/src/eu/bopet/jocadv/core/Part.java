@@ -1,7 +1,6 @@
 package eu.bopet.jocadv.core;
 
 import eu.bopet.jocadv.core.features.Feature;
-import eu.bopet.jocadv.core.geometries.Axis3D;
 import eu.bopet.jocadv.core.geometries.CSys3D;
 import eu.bopet.jocadv.core.vector.Value;
 import eu.bopet.jocadv.core.vector.Vector3D;

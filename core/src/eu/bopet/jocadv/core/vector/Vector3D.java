@@ -123,7 +123,7 @@ public class Vector3D implements Geometry, Feature {
         double result = Math.pow(other.getX().getValue() - this.getX().getValue(), 2);
         result = result + Math.pow(other.getY().getValue() - this.getY().getValue(), 2);
         result = result + Math.pow(other.getZ().getValue() - this.getZ().getValue(), 2);
-        return Math.sqrt(result);
+        return result;
     }
 
     /**
