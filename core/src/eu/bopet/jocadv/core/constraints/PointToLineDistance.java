@@ -1,6 +1,5 @@
 package eu.bopet.jocadv.core.constraints;
 
-import eu.bopet.jocadv.core.Constraint;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.geometries.Line3D;
 import eu.bopet.jocadv.core.solver.NumericalDifferentiation;
@@ -71,13 +70,13 @@ public final class PointToLineDistance extends Const implements Constraint {
      */
     @Override
     public double getValue() {
-        double ux = point.getX().getValue() - line.getP1().getX().getValue();
-        double uy = point.getY().getValue() - line.getP1().getY().getValue();
-        double uz = point.getZ().getValue() - line.getP1().getZ().getValue();
+        double ux = point.getX().getValue() - line.getP1().getVector3D().getX().getValue();
+        double uy = point.getY().getValue() - line.getP1().getVector3D().getY().getValue();
+        double uz = point.getZ().getValue() - line.getP1().getVector3D().getZ().getValue();
 
-        double vx = point.getX().getValue() - line.getP2().getX().getValue();
-        double vy = point.getY().getValue() - line.getP2().getY().getValue();
-        double vz = point.getZ().getValue() - line.getP2().getZ().getValue();
+        double vx = point.getX().getValue() - line.getP2().getVector3D().getX().getValue();
+        double vy = point.getY().getValue() - line.getP2().getVector3D().getY().getValue();
+        double vz = point.getZ().getValue() - line.getP2().getVector3D().getZ().getValue();
 
         double a = uy * vz - uz * vy;
         double b = uz * vx - ux * vz;

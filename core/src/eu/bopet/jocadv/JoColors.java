@@ -1,4 +1,4 @@
-package eu.bopet.jocadv.core;
+package eu.bopet.jocadv;
 
 import com.badlogic.gdx.graphics.Color;
 

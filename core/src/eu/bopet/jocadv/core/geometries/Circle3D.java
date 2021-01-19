@@ -37,7 +37,7 @@ public class Circle3D implements Geometry {
         this.sphere.setRadius(radius);
     }
 
-    public Vector3D getCenter() {
+    public Point3D getCenter() {
         return this.sphere.getCenter();
     }
 

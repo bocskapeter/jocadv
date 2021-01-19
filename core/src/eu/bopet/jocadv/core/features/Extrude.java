@@ -6,7 +6,7 @@ import eu.bopet.jocadv.core.vector.Vector3D;
 
 import java.util.List;
 
-public class Extrude implements Geometry, Feature {
+public class Extrude extends Feature implements Geometry {
     private Sketch sketch;
     private Vector3D direction;
     private Geometry limit;

@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
-import eu.bopet.jocadv.core.JoColors;
 import eu.bopet.jocadv.core.Part;
 
 import java.util.ArrayList;
@@ -60,7 +59,9 @@ public class JoCADv extends ApplicationAdapter {
 
         modelBatch = new ModelBatch();
 
-        cam = new OrthographicCamera(640, 640 * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
+        cam = new OrthographicCamera(
+                640,
+                640 * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
 
         cam.position.set(100f, 100f, 100f);
         cam.lookAt(0, 0, 0);

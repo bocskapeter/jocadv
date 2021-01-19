@@ -9,19 +9,19 @@ import java.util.List;
 public class Arc3D implements Geometry {
 
     private Circle3D circle;
-    private Vector3D p1;
-    private Vector3D p2;
+    private Point3D p1;
+    private Point3D p2;
 
-    public Arc3D(Circle3D circle, Vector3D p1, Vector3D p2) {
+    public Arc3D(Circle3D circle, Point3D p1, Point3D p2) {
         super();
         this.circle = circle;
         this.p1 = p1;
         this.p2 = p2;
     }
 
-    public Arc3D(Plane3D plane, Vector3D center, Vector3D p1, Vector3D p2) {
+    public Arc3D(Plane3D plane, Point3D center, Point3D p1, Point3D p2) {
         super();
-        Sphere3D sp = new Sphere3D(center, new Value(center.distance(p1)));
+        Sphere3D sp = new Sphere3D(center, new Value(center.getVector3D().distance(p1.getVector3D())));
         this.circle = new Circle3D(sp, plane);
         this.p1 = p1;
         this.p2 = p2;
@@ -35,19 +35,19 @@ public class Arc3D implements Geometry {
         this.circle = circle;
     }
 
-    public Vector3D getP1() {
+    public Point3D getP1() {
         return p1;
     }
 
-    public void setP1(Vector3D p1) {
+    public void setP1(Point3D p1) {
         this.p1 = p1;
     }
 
-    public Vector3D getP2() {
+    public Point3D getP2() {
         return p2;
     }
 
-    public void setP2(Vector3D p2) {
+    public void setP2(Point3D p2) {
         this.p2 = p2;
     }
 
@@ -59,7 +59,7 @@ public class Arc3D implements Geometry {
         this.circle.setRadius(radius);
     }
 
-    public Vector3D getCenter() {
+    public Point3D getCenter() {
         return this.circle.getCenter();
     }
 

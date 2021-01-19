@@ -7,7 +7,7 @@ import eu.bopet.jocadv.core.vector.Vector3D;
 
 import java.util.List;
 
-public class Revolve implements Geometry, Feature {
+public class Revolve extends Feature implements Geometry {
     private Sketch sketch;
     private Axis3D axis;
     private Value angle;

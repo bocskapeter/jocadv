@@ -1,6 +1,6 @@
 package eu.bopet.jocadv.core.features;
 
-import eu.bopet.jocadv.core.Constraint;
+import eu.bopet.jocadv.core.constraints.Constraint;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.constraints.Const;
 import eu.bopet.jocadv.core.constraints.PointOnPlane;
@@ -15,7 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Sketch implements Geometry, Feature{
+public class Sketch extends Feature implements Geometry{
     private final Set<Geometry> geometries;
     private final Set<Constraint> constraints;
     private final Set<Geometry> references;

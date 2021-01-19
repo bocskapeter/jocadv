@@ -6,7 +6,7 @@ import eu.bopet.jocadv.core.features.Feature;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vector3D implements Geometry, Feature {
+public class Vector3D implements Geometry {
 
     public static final Vector3D ORIGIN = new Vector3D(Value.ZERO, Value.ZERO, Value.ZERO);
     public static final Vector3D X = new Vector3D(Value.ONE, Value.ZERO, Value.ZERO);

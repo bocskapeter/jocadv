@@ -8,33 +8,33 @@ import java.util.List;
 
 public class Line3D implements Geometry {
 
-    private Vector3D p1;
-    private Vector3D p2;
+    private Point3D p1;
+    private Point3D p2;
 
-    public Line3D(Vector3D p1, Vector3D p2) {
+    public Line3D(Point3D p1, Point3D p2) {
         super();
         this.p1 = p1;
         this.p2 = p2;
     }
 
-    public Vector3D getP1() {
+    public Point3D getP1() {
         return p1;
     }
 
-    public void setP1(Vector3D p1) {
+    public void setP1(Point3D p1) {
         this.p1 = p1;
     }
 
-    public Vector3D getP2() {
+    public Point3D getP2() {
         return p2;
     }
 
-    public void setP2(Vector3D p2) {
+    public void setP2(Point3D p2) {
         this.p2 = p2;
     }
 
     public Vector3D getVector() {
-        return p2.subtract(p1);
+        return p2.getVector3D().subtract(p1.getVector3D());
     }
 
     @Override
@@ -57,13 +57,16 @@ public class Line3D implements Geometry {
     }
 
     public double getLength() {
-        return p1.distance(p2);
+        return p1.getVector3D().distance(p2.getVector3D());
     }
 
     public double dot(final Line3D o) {
-        return (p2.getX().getValue() - p1.getX().getValue()) * (o.p2.getX().getValue() - o.p1.getX().getValue())
-                + (p2.getY().getValue() - p1.getY().getValue()) * (o.p2.getY().getValue() - o.p1.getY().getValue())
-                + (p2.getZ().getValue() - p1.getZ().getValue()) * (o.p2.getZ().getValue() - o.p1.getZ().getValue());
+        return (p2.getVector3D().getX().getValue() - p1.getVector3D().getX().getValue()) *
+                (o.p2.getVector3D().getX().getValue() - o.p1.getVector3D().getX().getValue())
+                + (p2.getVector3D().getY().getValue() - p1.getVector3D().getY().getValue()) *
+                (o.p2.getVector3D().getY().getValue() - o.p1.getVector3D().getY().getValue())
+                + (p2.getVector3D().getZ().getValue() - p1.getVector3D().getZ().getValue()) *
+                (o.p2.getVector3D().getZ().getValue() - o.p1.getVector3D().getZ().getValue());
     }
 
     @Override

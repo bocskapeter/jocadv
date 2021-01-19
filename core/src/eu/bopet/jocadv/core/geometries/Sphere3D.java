@@ -8,20 +8,20 @@ import java.util.List;
 
 public class Sphere3D implements Geometry {
 
-    private Vector3D center;
+    private Point3D center;
     private Value radius;
 
-    public Sphere3D(Vector3D center, Value radius) {
+    public Sphere3D(Point3D center, Value radius) {
         super();
         this.center = center;
         this.radius = radius;
     }
 
-    public Vector3D getCenter() {
+    public Point3D getCenter() {
         return center;
     }
 
-    public void setCenter(Vector3D center) {
+    public void setCenter(Point3D center) {
         this.center = center;
     }
 
@@ -36,7 +36,7 @@ public class Sphere3D implements Geometry {
     @Override
     public List<Value> getValues() {
         List<Value> result = new ArrayList<>();
-        result.addAll(center.getValues());
+        result.addAll(center.getVector3D().getValues());
         result.add(radius);
         return result;
     }

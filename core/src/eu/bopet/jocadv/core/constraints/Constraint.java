@@ -1,5 +1,6 @@
-package eu.bopet.jocadv.core;
+package eu.bopet.jocadv.core.constraints;
 
+import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.vector.Value;
 import java.util.List;
 

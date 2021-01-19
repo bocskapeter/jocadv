@@ -7,47 +7,48 @@ import eu.bopet.jocadv.core.vector.Vector3D;
 
 import java.util.List;
 
-public class Axis3D extends Feature implements Geometry {
+public class Point3D extends Feature implements Geometry {
+    private Vector3D vector3D;
 
-    public static final Axis3D X = new Axis3D(Vector3D.ORIGIN, Vector3D.X);
-    public static final Axis3D Y = new Axis3D(Vector3D.ORIGIN, Vector3D.Y);
-    public static final Axis3D Z = new Axis3D(Vector3D.ORIGIN, Vector3D.Z);
+    public Point3D(Vector3D vector3D) {
+        this.vector3D = vector3D;
+    }
 
-    private Vector3D point;
-    private Vector3D direction;
+    public Vector3D getVector3D() {
+        return vector3D;
+    }
 
-    public Axis3D(Vector3D point, Vector3D direction) {
-        this.point = point;
-        this.direction = direction;
+    public void setVector3D(Vector3D vector3D) {
+        this.vector3D = vector3D;
     }
 
     @Override
     public List<Value> getValues() {
-        return null;
+        return vector3D.getValues();
     }
 
     @Override
     public List<Vector3D> getPoints() {
-        return null;
+        return vector3D.getPoints();
     }
 
     @Override
     public void setStatus(short status) {
-
+        vector3D.setStatus(status);
     }
 
     @Override
     public void constrained() {
-
+        vector3D.constrained();
     }
 
     @Override
     public void restore() {
-
+        vector3D.restore();
     }
 
     @Override
     public int getDOF() {
-        return 0;
+        return vector3D.getDOF();
     }
 }

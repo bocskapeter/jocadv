@@ -8,12 +8,14 @@ import eu.bopet.jocadv.core.vector.Vector3D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Part implements Geometry {
+public class Part extends Feature implements Geometry {
 
     List<Feature> features;
+    List<Part> parts;
 
     public Part() {
         features = new ArrayList<>();
+        parts = new ArrayList<>();
         features.add(CSys3D.DEFAULT);
     }
 

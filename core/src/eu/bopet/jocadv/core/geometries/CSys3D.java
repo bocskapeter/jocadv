@@ -7,7 +7,7 @@ import eu.bopet.jocadv.core.vector.Vector3D;
 
 import java.util.List;
 
-public class CSys3D implements Geometry, Feature {
+public class CSys3D extends Feature implements Geometry {
     public static final CSys3D DEFAULT = new CSys3D(Vector3D.ORIGIN,Axis3D.X,Axis3D.Y,Axis3D.Z,Plane3D.YZ,Plane3D.XZ,Plane3D.XY);
 
     private Vector3D origin;

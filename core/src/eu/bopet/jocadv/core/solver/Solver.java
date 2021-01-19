@@ -1,6 +1,6 @@
 package eu.bopet.jocadv.core.solver;
 
-import eu.bopet.jocadv.core.Constraint;
+import eu.bopet.jocadv.core.constraints.Constraint;
 import eu.bopet.jocadv.core.features.Sketch;
 import eu.bopet.jocadv.core.vector.Value;
 import java.util.ArrayList;

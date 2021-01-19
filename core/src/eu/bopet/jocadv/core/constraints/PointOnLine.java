@@ -1,6 +1,5 @@
 package eu.bopet.jocadv.core.constraints;
 
-import eu.bopet.jocadv.core.Constraint;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.geometries.Line3D;
 import eu.bopet.jocadv.core.solver.NumericalDifferentiation;
@@ -59,12 +58,12 @@ public final class PointOnLine extends Const implements Constraint {
      */
     @Override
     public double getValue() {
-        double ux = line.getP2().getX().getValue() - line.getP1().getX().getValue();
-        double uy = line.getP2().getY().getValue() - line.getP1().getY().getValue();
-        double uz = line.getP2().getZ().getValue() - line.getP1().getZ().getValue();
-        double vx = point.getX().getValue() - line.getP1().getX().getValue();
-        double vy = point.getY().getValue() - line.getP1().getY().getValue();
-        double vz = point.getZ().getValue() - line.getP1().getZ().getValue();
+        double ux = line.getP2().getVector3D().getX().getValue() - line.getP1().getVector3D().getX().getValue();
+        double uy = line.getP2().getVector3D().getY().getValue() - line.getP1().getVector3D().getY().getValue();
+        double uz = line.getP2().getVector3D().getZ().getValue() - line.getP1().getVector3D().getZ().getValue();
+        double vx = point.getX().getValue() - line.getP1().getVector3D().getX().getValue();
+        double vy = point.getY().getValue() - line.getP1().getVector3D().getY().getValue();
+        double vz = point.getZ().getValue() - line.getP1().getVector3D().getZ().getValue();
         double a = (uy * vz) - (uz * vy);
         double b = (uz * vx) - (ux * vz);
         double c = (ux * vy) - (uy * vx);

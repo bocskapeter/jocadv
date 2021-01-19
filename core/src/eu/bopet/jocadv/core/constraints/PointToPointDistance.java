@@ -1,6 +1,5 @@
 package eu.bopet.jocadv.core.constraints;
 
-import eu.bopet.jocadv.core.Constraint;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.solver.NumericalDifferentiation;
 import eu.bopet.jocadv.core.vector.Value;

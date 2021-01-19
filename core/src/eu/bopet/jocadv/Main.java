@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.bopet.jocadv.core;
+package eu.bopet.jocadv;
 
 import eu.bopet.jocadv.core.features.Sketch;
 import eu.bopet.jocadv.core.geometries.Plane3D;
