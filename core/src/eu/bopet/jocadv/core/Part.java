@@ -12,18 +12,22 @@ public class Part extends Feature implements Geometry {
 
     List<Feature> features;
     List<Part> parts;
+    Vector3D min;
+    Vector3D max;
 
     public Part() {
         features = new ArrayList<>();
         parts = new ArrayList<>();
         features.add(CSys3D.DEFAULT);
+        min = new Vector3D(Value.MINUS_ONE, Value.MINUS_ONE, Value.MINUS_ONE);
+        max = new Vector3D(Value.ONE, Value.ONE, Value.ONE);
     }
 
     public List<Feature> getFeatures() {
         return features;
     }
 
-    public void addFeature(Feature feature){
+    public void addFeature(Feature feature) {
         features.add(feature);
     }
 
@@ -54,5 +58,21 @@ public class Part extends Feature implements Geometry {
     @Override
     public int getDOF() {
         return 0;
+    }
+
+    public Vector3D getMin() {
+        return min;
+    }
+
+    public void setMin(Vector3D min) {
+        this.min = min;
+    }
+
+    public Vector3D getMax() {
+        return max;
+    }
+
+    public void setMax(Vector3D max) {
+        this.max = max;
     }
 }

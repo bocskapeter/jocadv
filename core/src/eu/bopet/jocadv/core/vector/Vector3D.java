@@ -12,6 +12,9 @@ public class Vector3D implements Geometry {
     public static final Vector3D X = new Vector3D(Value.ONE, Value.ZERO, Value.ZERO);
     public static final Vector3D Y = new Vector3D(Value.ZERO, Value.ONE, Value.ZERO);
     public static final Vector3D Z = new Vector3D(Value.ZERO, Value.ZERO, Value.ONE);
+    public static final Vector3D MINUS_X = new Vector3D(Value.MINUS_ONE, Value.ZERO, Value.ZERO);
+    public static final Vector3D MINUS_Y = new Vector3D(Value.ZERO, Value.MINUS_ONE, Value.ZERO);
+    public static final Vector3D MINUS_Z = new Vector3D(Value.ZERO, Value.ZERO, Value.MINUS_ONE);
 
     private Value x;
     private Value y;
