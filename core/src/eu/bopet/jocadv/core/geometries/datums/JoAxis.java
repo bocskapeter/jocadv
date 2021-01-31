@@ -36,7 +36,6 @@ public class JoAxis extends Feature implements Stretchable {
 
     @Override
     public void stretchTo(JoVector min, JoVector max) {
-        System.out.println(" Axis: " + line.getDirection().toString());
         JoVector direction = new JoVector(line.getDirection());
         if (direction.getMainAbsDirection() == Vector3D.PLUS_I) {
             Vector3D vector3D = new Vector3D(max.getVector3D().getX(), 0, 0);

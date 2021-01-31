@@ -1,6 +1,8 @@
 package eu.bopet.jocadv;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -93,11 +95,8 @@ public class JoRenderer {
     }
 
     private ModelInstance renderPoint(JoPoint joPoint) {
-        Vector3 to = joPoint.getVector().getVector3();
-        modelBuilder.begin();
-        meshPartBuilder = modelBuilder.part("point", 1, 3, new Material());
-        meshPartBuilder.vertex(to, Vector3.Zero, Color.CYAN, Vector2.Zero);
-        Model point = modelBuilder.end();
-        return new ModelInstance(point);
+        Vector3 from = joPoint.getVector().getVector3();
+        Vector3 to = new Vector3(from.x+0.01f,from.y,from.z);
+        return renderLine(from, to,Color.WHITE);
     }
 }

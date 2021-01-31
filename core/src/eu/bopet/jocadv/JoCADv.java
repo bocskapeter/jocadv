@@ -33,12 +33,6 @@ public class JoCADv extends ApplicationAdapter {
     private String text;
 
     public ModelBatch modelBatch;
-    public Model axisX;
-    public Model axisY;
-    public Model axisZ;
-    public ModelInstance instanceX;
-    public ModelInstance instanceY;
-    public ModelInstance instanceZ;
 
     @Override
     public void create() {
@@ -76,16 +70,6 @@ public class JoCADv extends ApplicationAdapter {
         JoInput input = new JoInput(cam, Vector3.Zero);
         Gdx.input.setInputProcessor(input);
 
-        ModelBuilder modelBuilder = new ModelBuilder();
-        axisX = modelBuilder.createArrow(new Vector3(0, 0, 0), new Vector3(200, 0, 0),
-                new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position);
-        axisY = modelBuilder.createArrow(new Vector3(0, 0, 0), new Vector3(0, 200, 0),
-                new Material(ColorAttribute.createDiffuse(Color.GREEN)), VertexAttributes.Usage.Position);
-        axisZ = modelBuilder.createArrow(new Vector3(0, 0, 0), new Vector3(0, 0, 200),
-                new Material(ColorAttribute.createDiffuse(Color.BLUE)), VertexAttributes.Usage.Position);
-        instanceX = new ModelInstance(axisX);
-        instanceY = new ModelInstance(axisY);
-        instanceZ = new ModelInstance(axisZ);
         renderer = new JoRenderer(currentPart.getFeatures());
         renderer.renderFeatures();
     }
@@ -120,7 +104,6 @@ public class JoCADv extends ApplicationAdapter {
     @Override
     public void dispose() {
         modelBatch.dispose();
-        axisX.dispose();
     }
 
     @Override
