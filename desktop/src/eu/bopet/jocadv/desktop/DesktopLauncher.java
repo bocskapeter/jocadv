@@ -11,7 +11,8 @@ public class DesktopLauncher {
 		config.height = 720;
 		config.foregroundFPS = 60;
 		config.backgroundFPS =30;
-		config.title = "JoCADv 0.1";
+		config.title = "JoCADv 1.0";
+		config.samples = 3;
 		new LwjglApplication(new JoCADv(), config);
 	}
 }

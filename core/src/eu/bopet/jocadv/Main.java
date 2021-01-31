@@ -6,7 +6,7 @@
 package eu.bopet.jocadv;
 
 import eu.bopet.jocadv.core.features.Sketch;
-import eu.bopet.jocadv.core.geometries.Plane3D;
+import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 
 /**
  *
@@ -15,7 +15,7 @@ import eu.bopet.jocadv.core.geometries.Plane3D;
 public class Main {
 
     public static void main(String[] args) {
-        Sketch s = new Sketch(Plane3D.XY);
+        Sketch s = new Sketch(JoPlane.XY);
         System.out.println("Sketch: " + s.toString());
     }
 

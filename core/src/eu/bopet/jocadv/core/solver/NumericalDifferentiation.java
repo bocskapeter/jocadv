@@ -33,13 +33,7 @@ public class NumericalDifferentiation {
         // f(x+h)
         double tempValue2;
         for (int i = 0; i < constraint.getArguments().size(); i++) {
-            tempArgument = constraint.getArguments().get(i).getValue();
-            constraint.getArguments().get(i).setValue(tempArgument - interval);
-            tempValue1 = constraint.getValue();
-            constraint.getArguments().get(i).setValue(tempArgument + interval);
-            tempValue2 = constraint.getValue();
-            result.add((tempValue2 - tempValue1) / (2 * interval));
-            constraint.getArguments().get(i).setValue(tempArgument);
+
         }
         return result;
     }

@@ -1,7 +1,7 @@
 package eu.bopet.jocadv.core;
 
 import eu.bopet.jocadv.core.vector.Value;
-import eu.bopet.jocadv.core.vector.Vector3D;
+import eu.bopet.jocadv.core.vector.JoVector;
 import java.util.List;
 
 public interface Geometry {
@@ -12,7 +12,7 @@ public interface Geometry {
      */
     List<Value> getValues();
 
-    List<Vector3D> getPoints();
+    List<JoVector> getPoints();
 
     void setStatus(short status);
 

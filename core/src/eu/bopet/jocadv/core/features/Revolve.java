@@ -1,15 +1,15 @@
 package eu.bopet.jocadv.core.features;
 
 import eu.bopet.jocadv.core.Geometry;
-import eu.bopet.jocadv.core.geometries.Axis3D;
+import eu.bopet.jocadv.core.geometries.datums.JoAxis;
+import eu.bopet.jocadv.core.vector.JoVector;
 import eu.bopet.jocadv.core.vector.Value;
-import eu.bopet.jocadv.core.vector.Vector3D;
 
 import java.util.List;
 
-public class Revolve extends Feature implements Geometry {
+public class Revolve implements Geometry {
     private Sketch sketch;
-    private Axis3D axis;
+    private JoAxis axis;
     private Value angle;
     @Override
     public List<Value> getValues() {
@@ -17,7 +17,7 @@ public class Revolve extends Feature implements Geometry {
     }
 
     @Override
-    public List<Vector3D> getPoints() {
+    public List<JoVector> getPoints() {
         return null;
     }
 

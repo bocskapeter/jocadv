@@ -2,13 +2,13 @@ package eu.bopet.jocadv.core.features;
 
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.vector.Value;
-import eu.bopet.jocadv.core.vector.Vector3D;
+import eu.bopet.jocadv.core.vector.JoVector;
 
 import java.util.List;
 
-public class Extrude extends Feature implements Geometry {
+public class Extrude implements Geometry {
     private Sketch sketch;
-    private Vector3D direction;
+    private JoVector direction;
     private Geometry limit;
 
     @Override
@@ -17,7 +17,7 @@ public class Extrude extends Feature implements Geometry {
     }
 
     @Override
-    public List<Vector3D> getPoints() {
+    public List<JoVector> getPoints() {
         return null;
     }
 

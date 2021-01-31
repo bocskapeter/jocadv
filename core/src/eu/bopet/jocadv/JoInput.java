@@ -117,6 +117,7 @@ public class JoInput implements InputProcessor {
         clickedButton = button;
         pickingRay = camera.getPickRay(clickX, clickY);
         if (clickedButton == Input.Buttons.LEFT) {
+
             // TODO: Select objects
             return true;
         }
@@ -186,9 +187,9 @@ public class JoInput implements InputProcessor {
     }
 
     @Override
-    public boolean scrolled(int amount) {
+    public boolean scrolled(float amountX, float amountY) {
         rayBeforeZoom = camera.getPickRay(Gdx.input.getX(),Gdx.input.getY()).cpy();
-        camera.viewportHeight = camera.viewportHeight + amount * zoomFactor * camera.viewportHeight;
+        camera.viewportHeight = camera.viewportHeight + amountY * zoomFactor * camera.viewportHeight;
         camera.viewportWidth = camera.viewportHeight * getRatio();
         camera.update();
         rayAfterZoom = camera.getPickRay(Gdx.input.getX(),Gdx.input.getY()).cpy();
