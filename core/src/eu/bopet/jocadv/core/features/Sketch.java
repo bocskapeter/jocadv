@@ -1,8 +1,9 @@
 package eu.bopet.jocadv.core.features;
 
-import eu.bopet.jocadv.core.Constraint;
+
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.constraints.Const;
+import eu.bopet.jocadv.core.constraints.Constraint;
 import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.solver.Solver;
 import eu.bopet.jocadv.core.vector.JoVector;
