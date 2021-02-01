@@ -32,9 +32,7 @@ public class NumericalDifferentiation {
         double tempValue1;
         // f(x+h)
         double tempValue2;
-        for (int i = 0; i < constraint.getArguments().size(); i++) {
 
-        }
         return result;
     }
 }

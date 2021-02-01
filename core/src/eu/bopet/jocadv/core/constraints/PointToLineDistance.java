@@ -1,7 +1,6 @@
 package eu.bopet.jocadv.core.constraints;
 
 import eu.bopet.jocadv.core.Geometry;
-import eu.bopet.jocadv.core.vector.Value;
 
 import java.util.List;
 
@@ -10,11 +9,6 @@ public final class PointToLineDistance extends Const implements Constraint {
 
     @Override
     public List<Geometry> getGeometries() {
-        return null;
-    }
-
-    @Override
-    public List<Value> getArguments() {
         return null;
     }
 

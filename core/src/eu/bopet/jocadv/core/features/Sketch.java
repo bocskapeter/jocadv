@@ -1,17 +1,18 @@
 package eu.bopet.jocadv.core.features;
 
-
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.constraints.Const;
 import eu.bopet.jocadv.core.constraints.Constraint;
 import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.solver.Solver;
-import eu.bopet.jocadv.core.vector.JoVector;
-import eu.bopet.jocadv.core.vector.Value;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
-public class Sketch implements Geometry{
+public class Sketch extends Feature implements Geometry{
     private final Set<Geometry> geometries;
     private final Set<Constraint> constraints;
     private final Set<Geometry> references;
@@ -34,9 +35,11 @@ public class Sketch implements Geometry{
     }
 
     public void edit() {
+        this.inEdit = true;
     }
 
     public void done() {
+        this.inEdit = false;
     }
 
     public boolean isInEdit() {
@@ -45,6 +48,7 @@ public class Sketch implements Geometry{
 
     public void addGeometry(Geometry geometry) {
         this.geometries.add(geometry);
+
     }
 
     public void addConstraint(Constraint constraint) {
@@ -86,11 +90,6 @@ public class Sketch implements Geometry{
         }
     }
 
-    @Override
-    public int getDOF() {
-        return 0;
-    }
-
     public void constrained() {
         for (Geometry geometry : geometries) {
             geometry.constrained();
@@ -113,20 +112,6 @@ public class Sketch implements Geometry{
         return references;
     }
 
-    @Override
-    public List<Value> getValues() {
-        return null;
-    }
-
-    public List<JoVector> getPoints() {
-        Set<JoVector> result = new HashSet<>();
-        for (Geometry g : geometries) {
-            if (g instanceof JoVector) {
-                result.add((JoVector) g);
-            }
-        }
-        return (List<JoVector>) result;
-    }
 
     @Override
     public void setStatus(short status) {
