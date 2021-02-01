@@ -46,6 +46,7 @@ public class Part extends Feature implements Geometry {
 
     public void addFeature(Feature feature) {
         features.add(feature);
+        stretch();
     }
 
 

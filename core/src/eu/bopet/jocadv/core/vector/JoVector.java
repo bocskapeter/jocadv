@@ -16,6 +16,10 @@ public class JoVector {
         this.vector3D = vector3D;
     }
 
+    public JoVector(Vector3 vector3) {
+        this.vector3D = new Vector3D(vector3.x, vector3.y, vector3.z);
+    }
+
     public Vector3D getVector3D() {
         return vector3D;
     }
@@ -38,5 +42,10 @@ public class JoVector {
 
     public Vector3 getVector3() {
         return new Vector3((float) vector3D.getX(), (float) vector3D.getY(), (float) vector3D.getZ());
+    }
+
+    @Override
+    public String toString() {
+        return "JoVector{" + vector3D.toString() + '}';
     }
 }

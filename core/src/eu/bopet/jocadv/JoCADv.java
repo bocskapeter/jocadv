@@ -2,24 +2,29 @@ package eu.bopet.jocadv;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import eu.bopet.jocadv.core.Part;
+import eu.bopet.jocadv.core.features.Feature;
+import eu.bopet.jocadv.core.geometries.datums.JoAxis;
+import eu.bopet.jocadv.core.vector.JoVector;
+import eu.bopet.jocadv.core.vector.Value;
+import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JoCADv extends ApplicationAdapter {
+
 
     private JoRenderer renderer;
     private List<Part> parts;
@@ -67,7 +72,7 @@ public class JoCADv extends ApplicationAdapter {
         cam.far = 3000f;
         cam.update();
 
-        JoInput input = new JoInput(cam, Vector3.Zero);
+        JoInput input = new JoInput(this);
         Gdx.input.setInputProcessor(input);
 
         renderer = new JoRenderer(currentPart.getFeatures());
@@ -111,5 +116,26 @@ public class JoCADv extends ApplicationAdapter {
         cam.viewportWidth = 640;
         cam.viewportHeight = 640 * (float) height / (float) width;
         cam.update();
+    }
+
+    public OrthographicCamera getCamera() {
+        return cam;
+    }
+
+    public void pickFeature(Ray pickingRay, double kdistance) {
+        JoVector p1 = new JoVector(pickingRay.origin);
+        JoVector p2 = new JoVector(pickingRay.origin.add(pickingRay.direction));
+        Line pickingLine = new Line(p1.getVector3D(), p2.getVector3D(), Value.TOLERANCE);
+        for (Feature feature: currentPart.getFeatures()){
+            if (feature instanceof JoAxis){
+                JoAxis axis = (JoAxis) feature;
+                double d = axis.getLine().distance(pickingLine);
+                System.out.println("Clicked: " + axis + " measured distance: " + d +" picked distance: " + kdistance);
+                if (d < kdistance){
+                    System.out.println("Clicked: " + axis + " distance: " + d);
+                }
+            }
+        }
+        renderer.renderFeatures();
     }
 }

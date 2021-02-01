@@ -9,8 +9,9 @@ import com.badlogic.gdx.math.collision.Ray;
 
 public class JoInput implements InputProcessor {
 
-    private static final float zoomFactor = 0.1f;
-    private static final float rotateFactor = 0.5f;
+    private static final float ZOOM_FACTOR = 0.1f;
+    private static final float ROTATE_FACTOR = 0.5f;
+    private static final int CLICK_RADIUS = 10;
 
 
     private OrthographicCamera camera;
@@ -31,11 +32,14 @@ public class JoInput implements InputProcessor {
     private Ray rayBeforeZoom;
     private Ray rayAfterZoom;
     private Vector3 moveAfterZoom;
+    private JoCADv joCADv;
 
 
-    public JoInput(OrthographicCamera camera, Vector3 centerOfRotation) {
-        this.camera = camera;
-        this.centerOfRotation = centerOfRotation;
+
+    public JoInput(JoCADv joCADv) {
+        this.joCADv = joCADv;
+        this.camera = joCADv.getCamera();
+        this.centerOfRotation = Vector3.Zero;
     }
 
     private float getRatio() {
@@ -117,7 +121,15 @@ public class JoInput implements InputProcessor {
         clickedButton = button;
         pickingRay = camera.getPickRay(clickX, clickY);
         if (clickedButton == Input.Buttons.LEFT) {
-
+            Vector3 pick = camera.unproject(new Vector3(clickX,clickY,0));
+            System.out.println(" picking ray: " + pick.toString());
+            int newX = clickX+CLICK_RADIUS;
+            int newY = clickY+CLICK_RADIUS;
+            Vector3 nextPick = camera.unproject(new Vector3(newX,newY,0));
+            System.out.println(" next ray: " + nextPick.toString());
+            float distance = pick.dst(nextPick);
+            System.out.println("distance: " + distance);
+            joCADv.pickFeature(pickingRay, distance);
             // TODO: Select objects
             return true;
         }
@@ -156,11 +168,11 @@ public class JoInput implements InputProcessor {
     private void rotate(int dx, int dy) {
         rotateX = rotateX - dx;
         rotateY = rotateY - dy;
-        camera.rotateAround(centerOfRotation, camera.up, rotateX * rotateFactor);
+        camera.rotateAround(centerOfRotation, camera.up, rotateX * ROTATE_FACTOR);
         up = new Vector3(camera.up);
         direction = new Vector3(camera.direction);
         cross = up.crs(direction);
-        camera.rotateAround(centerOfRotation, cross, -rotateY * rotateFactor);
+        camera.rotateAround(centerOfRotation, cross, -rotateY * ROTATE_FACTOR);
         rotateX = dx;
         rotateY = dy;
 
@@ -189,7 +201,7 @@ public class JoInput implements InputProcessor {
     @Override
     public boolean scrolled(float amountX, float amountY) {
         rayBeforeZoom = camera.getPickRay(Gdx.input.getX(),Gdx.input.getY()).cpy();
-        camera.viewportHeight = camera.viewportHeight + amountY * zoomFactor * camera.viewportHeight;
+        camera.viewportHeight = camera.viewportHeight + amountY * ZOOM_FACTOR * camera.viewportHeight;
         camera.viewportWidth = camera.viewportHeight * getRatio();
         camera.update();
         rayAfterZoom = camera.getPickRay(Gdx.input.getX(),Gdx.input.getY()).cpy();
