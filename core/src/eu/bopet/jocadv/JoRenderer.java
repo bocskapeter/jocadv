@@ -1,6 +1,8 @@
 package eu.bopet.jocadv;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -19,14 +21,18 @@ import java.util.List;
 
 public class JoRenderer {
     List<Feature> features;
+    JoCADv joCADv;
     List<ModelInstance> modelInstances;
     ModelBuilder modelBuilder;
     MeshPartBuilder meshPartBuilder;
+    Camera camera;
 
-    public JoRenderer(List<Feature> features) {
+    public JoRenderer(JoCADv joCADv, List<Feature> features, OrthographicCamera cam) {
         this.features = features;
+        this.joCADv = joCADv;
         modelInstances = new ArrayList<>();
         modelBuilder = new ModelBuilder();
+        camera = cam;
     }
 
     public List<ModelInstance> getModelInstances() {
@@ -39,7 +45,7 @@ public class JoRenderer {
                 modelInstances.add(renderPoint((JoPoint) feature));
             }
             if (feature instanceof JoAxis) {
-                modelInstances.add(renderAxis((JoAxis) feature, Color.BROWN));
+                modelInstances.add(renderAxis((JoAxis) feature, Color.CORAL));
             }
             if (feature instanceof JoCoordinateSystem) {
                 JoCoordinateSystem coordinateSystem = (JoCoordinateSystem) feature;
@@ -93,7 +99,10 @@ public class JoRenderer {
 
     private ModelInstance renderPoint(JoPoint joPoint) {
         Vector3 from = joPoint.getVector().getVector3();
-        Vector3 to = new Vector3(from.x+0.01f,from.y,from.z);
-        return renderLine(from, to,Color.WHITE);
+        float r = 1;//joCADv.getZoomFactor()*100000000;
+
+        Model point = modelBuilder.createSphere(r,r,r,20,20, new Material(),1);
+
+        return new ModelInstance(point);
     }
 }

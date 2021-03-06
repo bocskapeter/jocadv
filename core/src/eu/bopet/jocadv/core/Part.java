@@ -4,6 +4,7 @@ import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.geometries.datums.JoAxis;
 import eu.bopet.jocadv.core.geometries.datums.JoCoordinateSystem;
 import eu.bopet.jocadv.core.geometries.datums.JoPlane;
+import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 import eu.bopet.jocadv.core.vector.JoVector;
 import eu.bopet.jocadv.core.vector.Value;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
@@ -26,6 +27,7 @@ public class Part extends Feature implements Geometry {
         features.add(JoCoordinateSystem.DEFAULT);
         features.add(new JoPlane(new Plane(Vector3D.PLUS_J,new Vector3D(4,5,6), Value.TOLERANCE)));
         features.add(new JoAxis(new Line(new Vector3D(2,3,8),new Vector3D(0,1,9),Value.TOLERANCE)));
+        features.add(new JoPoint(new JoVector(new Vector3D(1,2,3))));
 
         min = new JoVector(new Vector3D(-10,-11,-12));
         max = new JoVector(new Vector3D(13,14,15));

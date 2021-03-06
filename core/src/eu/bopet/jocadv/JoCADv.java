@@ -2,6 +2,7 @@ package eu.bopet.jocadv;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.collision.Ray;
 import eu.bopet.jocadv.core.Part;
 import eu.bopet.jocadv.core.features.Feature;
@@ -22,6 +25,8 @@ import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.badlogic.gdx.graphics.GL20.GL_POINTS;
 
 public class JoCADv extends ApplicationAdapter {
 
@@ -39,6 +44,10 @@ public class JoCADv extends ApplicationAdapter {
 
     public ModelBatch modelBatch;
 
+    private    ShapeRenderer shapeRenderer;
+    ImmediateModeRenderer20 immediateRenderer;
+    private float zoomFactor=1;
+
     @Override
     public void create() {
 
@@ -50,6 +59,8 @@ public class JoCADv extends ApplicationAdapter {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
         spriteBatch = new SpriteBatch();
+
+        shapeRenderer = new ShapeRenderer();
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(
                 "Isonorm-3098-Regular.ttf"));
@@ -75,8 +86,10 @@ public class JoCADv extends ApplicationAdapter {
         JoInput input = new JoInput(this);
         Gdx.input.setInputProcessor(input);
 
-        renderer = new JoRenderer(currentPart.getFeatures());
+        renderer = new JoRenderer(this, currentPart.getFeatures(),cam);
         renderer.renderFeatures();
+
+        immediateRenderer = new ImmediateModeRenderer20(50000, false, true, 0);
     }
 
     @Override
@@ -90,7 +103,7 @@ public class JoCADv extends ApplicationAdapter {
 
         cam.update();
 
-        Gdx.gl.glLineWidth(1.3f);
+        Gdx.gl.glLineWidth(2.0f);
 
         modelBatch.begin(cam);
         for (ModelInstance modelInstance : renderer.getModelInstances()) {
@@ -101,9 +114,14 @@ public class JoCADv extends ApplicationAdapter {
         spriteBatch.begin();
         text = "FPS: " + Gdx.graphics.getFramesPerSecond();
         text = text + "\n" + FreeTypeFontGenerator.DEFAULT_CHARS;
-
         font.draw(spriteBatch, text, 10, Gdx.graphics.getHeight() - 10);
         spriteBatch.end();
+
+        immediateRenderer.begin(cam.combined,GL_POINTS);
+        immediateRenderer.color(Color.WHITE);
+        immediateRenderer.vertex(1,1,1);
+        immediateRenderer.end();
+
     }
 
     @Override
@@ -122,7 +140,7 @@ public class JoCADv extends ApplicationAdapter {
         return cam;
     }
 
-    public void pickFeature(Ray pickingRay, double kdistance) {
+    public void pickFeature(Ray pickingRay, double distance) {
         JoVector p1 = new JoVector(pickingRay.origin);
         JoVector p2 = new JoVector(pickingRay.origin.add(pickingRay.direction));
         Line pickingLine = new Line(p1.getVector3D(), p2.getVector3D(), Value.TOLERANCE);
@@ -130,12 +148,20 @@ public class JoCADv extends ApplicationAdapter {
             if (feature instanceof JoAxis){
                 JoAxis axis = (JoAxis) feature;
                 double d = axis.getLine().distance(pickingLine);
-                System.out.println("Clicked: " + axis + " measured distance: " + d +" picked distance: " + kdistance);
-                if (d < kdistance){
+                System.out.println("Clicked: " + axis + " measured distance: " + d +" picked distance: " + distance);
+                if (d < distance){
                     System.out.println("Clicked: " + axis + " distance: " + d);
                 }
             }
         }
         renderer.renderFeatures();
+    }
+
+    public float getZoomFactor() {
+        return zoomFactor;
+    }
+
+    public void setZoomFactor(float zoomFactor) {
+        this.zoomFactor = zoomFactor;
     }
 }

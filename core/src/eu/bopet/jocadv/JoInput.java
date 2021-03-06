@@ -11,7 +11,7 @@ public class JoInput implements InputProcessor {
 
     private static final float ZOOM_FACTOR = 0.1f;
     private static final float ROTATE_FACTOR = 0.5f;
-    private static final int CLICK_RADIUS = 10;
+    private static final int CLICK_RADIUS = 5;
 
 
     private OrthographicCamera camera;
@@ -195,6 +195,15 @@ public class JoInput implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        Vector3 pick = camera.unproject(new Vector3(screenX,screenY,0));
+        System.out.println(" picking ray: " + pick.toString());
+        int newX = screenX+CLICK_RADIUS;
+        int newY = screenY+CLICK_RADIUS;
+        Vector3 nextPick = camera.unproject(new Vector3(newX,newY,0));
+        System.out.println(" next ray: " + nextPick.toString());
+        float distance = pick.dst(nextPick);
+        System.out.println("distance: " + distance);
+        joCADv.setZoomFactor(distance);
         return false;
     }
 
