@@ -1,12 +1,9 @@
 package eu.bopet.jocadv.core;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Line;
+
 public interface Geometry {
 
-
-    void setStatus(short status);
-
-    void constrained();
-
-    void restore();
+    double distance (Line pickingLine);
 
 }

@@ -51,18 +51,8 @@ public class Part extends Feature implements Geometry {
         stretch();
     }
 
-
     @Override
-    public void setStatus(short status) {
-    }
-
-    @Override
-    public void constrained() {
-
-    }
-
-    @Override
-    public void restore() {
-
+    public double distance(Line pickingLine) {
+        return 0;
     }
 }

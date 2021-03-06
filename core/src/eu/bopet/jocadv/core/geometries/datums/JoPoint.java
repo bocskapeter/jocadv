@@ -1,9 +1,11 @@
 package eu.bopet.jocadv.core.geometries.datums;
 
+import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.vector.JoVector;
+import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
-public class JoPoint extends Feature {
+public class JoPoint extends Feature implements Geometry {
 
     public static final JoPoint ORIGIN = new JoPoint(JoVector.ZERO);
 
@@ -15,5 +17,10 @@ public class JoPoint extends Feature {
 
     public JoVector getVector() {
         return vector;
+    }
+
+    @Override
+    public double distance(Line pickingLine) {
+        return vector.getVector3D().distance(pickingLine.getOrigin().add(pickingLine.getDirection()));
     }
 }
