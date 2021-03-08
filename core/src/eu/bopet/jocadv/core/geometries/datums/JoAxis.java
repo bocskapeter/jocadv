@@ -9,6 +9,8 @@ import org.apache.commons.math3.geometry.euclidean.threed.Line;
 import org.apache.commons.math3.geometry.euclidean.threed.Plane;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
+import java.util.List;
+
 public class JoAxis extends Feature implements Geometry, Stretchable {
 
     public static final JoAxis X_AXIS = new JoAxis(new Line(Vector3D.ZERO, Vector3D.PLUS_I, Value.TOLERANCE));
@@ -74,5 +76,10 @@ public class JoAxis extends Feature implements Geometry, Stretchable {
     @Override
     public double distance(Line pickingLine) {
         return line.distance(pickingLine);
+    }
+
+    @Override
+    public List<Feature> getFeatures() {
+        return null;
     }
 }

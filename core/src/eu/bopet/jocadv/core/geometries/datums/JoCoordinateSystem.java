@@ -1,10 +1,15 @@
 package eu.bopet.jocadv.core.geometries.datums;
 
+import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Stretchable;
 import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.vector.JoVector;
+import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
-public class JoCoordinateSystem extends Feature implements Stretchable {
+import java.util.ArrayList;
+import java.util.List;
+
+public class JoCoordinateSystem extends Feature implements Geometry, Stretchable {
     public static final JoCoordinateSystem DEFAULT = new JoCoordinateSystem(
             JoPoint.ORIGIN,
             JoAxis.X_AXIS, JoAxis.Y_AXIS, JoAxis.Z_AXIS,
@@ -92,5 +97,17 @@ public class JoCoordinateSystem extends Feature implements Stretchable {
         xyPlane.stretchTo(min, max);
         yzPlane.stretchTo(min, max);
         xzPlane.stretchTo(min, max);
+    }
+
+    @Override
+    public double distance(Line pickingLine) {
+        return 0;
+    }
+
+    @Override
+    public List<Feature> getFeatures() {
+        List<Feature> result = new ArrayList<>();
+        result.add(origin);
+        return null;
     }
 }
