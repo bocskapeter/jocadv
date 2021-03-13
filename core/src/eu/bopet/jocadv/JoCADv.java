@@ -45,9 +45,9 @@ public class JoCADv extends ApplicationAdapter {
 
     public ModelBatch modelBatch;
 
-    private    ShapeRenderer shapeRenderer;
+    private ShapeRenderer shapeRenderer;
     ImmediateModeRenderer20 immediateRenderer;
-    private float zoomFactor=1;
+    private float zoomFactor = 1;
 
     @Override
     public void create() {
@@ -87,7 +87,7 @@ public class JoCADv extends ApplicationAdapter {
         JoInput input = new JoInput(this);
         Gdx.input.setInputProcessor(input);
 
-        renderer = new JoRenderer(this, currentPart.getFeatures(),cam);
+        renderer = new JoRenderer(this, currentPart.getFeatures(), cam);
         renderer.renderFeatures();
 
         immediateRenderer = new ImmediateModeRenderer20(50000, false, true, 0);
@@ -118,9 +118,9 @@ public class JoCADv extends ApplicationAdapter {
         font.draw(spriteBatch, text, 10, Gdx.graphics.getHeight() - 10);
         spriteBatch.end();
 
-        immediateRenderer.begin(cam.combined,GL_POINTS);
+        immediateRenderer.begin(cam.combined, GL_POINTS);
         immediateRenderer.color(Color.WHITE);
-        immediateRenderer.vertex(1,1,1);
+        immediateRenderer.vertex(1, 1, 1);
         immediateRenderer.end();
 
     }
@@ -142,12 +142,11 @@ public class JoCADv extends ApplicationAdapter {
     }
 
     public void pickFeature(Line pickingRay, double distance) {
-        for (Feature feature: currentPart.getFeatures()){
-
-            if (feature instanceof Geometry){
+        for (Feature feature : currentPart.getFeatures()) {
+            if (feature instanceof Geometry) {
                 Geometry geometry = (Geometry) feature;
-                if (geometry.distance(pickingRay)<distance){
-                    ((Feature)geometry).setSelected(true);
+                if (geometry.distance(pickingRay) < distance) {
+                    ((Feature) geometry).setSelected(true);
                     System.out.println("Selected: " + feature.toString());
                 }
             }
@@ -161,5 +160,15 @@ public class JoCADv extends ApplicationAdapter {
 
     public void setZoomFactor(float zoomFactor) {
         this.zoomFactor = zoomFactor;
+    }
+
+    public void deSelect() {
+        for (Feature feature : currentPart.getFeatures()) {
+            if (feature instanceof Geometry) {
+                Geometry geometry = (Geometry) feature;
+                ((Feature) geometry).setSelected(false);
+            }
+        }
+        renderer.renderFeatures();
     }
 }

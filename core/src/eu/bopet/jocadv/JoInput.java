@@ -66,6 +66,9 @@ public class JoInput implements InputProcessor {
                 resetCamera();
                 viewZ();
                 break;
+            case Input.Keys.ESCAPE:
+                joCADv.deSelect();
+                break;
         }
         camera.update();
         return false;

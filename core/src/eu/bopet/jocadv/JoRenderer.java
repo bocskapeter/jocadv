@@ -1,8 +1,6 @@
 package eu.bopet.jocadv;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -86,7 +84,8 @@ public class JoRenderer {
         Vector3 normal = joPlane.getNormal().getVector3();
         modelBuilder.begin();
         meshPartBuilder = modelBuilder.part("plane", 1, 3, new Material());
-        meshPartBuilder.setColor(Color.BROWN);
+        meshPartBuilder.setColor(JoColors.PLANE);
+        meshPartBuilder.setUVRange(0.5f, 0f, 0f, 0.5f);
         meshPartBuilder.rect(p1, p3, p4, p2, normal);
         Model plane = modelBuilder.end();
 
