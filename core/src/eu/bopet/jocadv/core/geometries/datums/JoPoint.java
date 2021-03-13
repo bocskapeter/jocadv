@@ -23,7 +23,7 @@ public class JoPoint extends Feature implements Geometry {
 
     @Override
     public double distance(Line pickingLine) {
-        return vector.getVector3D().distance(pickingLine.getOrigin().add(pickingLine.getDirection()));
+        return pickingLine.distance(vector.getVector3D());
     }
 
     @Override

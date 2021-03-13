@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.collision.Ray;
+import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Part;
 import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.geometries.datums.JoAxis;
@@ -140,17 +141,14 @@ public class JoCADv extends ApplicationAdapter {
         return cam;
     }
 
-    public void pickFeature(Ray pickingRay, double distance) {
-        JoVector p1 = new JoVector(pickingRay.origin);
-        JoVector p2 = new JoVector(pickingRay.origin.add(pickingRay.direction));
-        Line pickingLine = new Line(p1.getVector3D(), p2.getVector3D(), Value.TOLERANCE);
+    public void pickFeature(Line pickingRay, double distance) {
         for (Feature feature: currentPart.getFeatures()){
-            if (feature instanceof JoAxis){
-                JoAxis axis = (JoAxis) feature;
-                double d = axis.getLine().distance(pickingLine);
-                System.out.println("Clicked: " + axis + " measured distance: " + d +" picked distance: " + distance);
-                if (d < distance){
-                    System.out.println("Clicked: " + axis + " distance: " + d);
+
+            if (feature instanceof Geometry){
+                Geometry geometry = (Geometry) feature;
+                if (geometry.distance(pickingRay)<distance){
+                    ((Feature)geometry).setSelected(true);
+                    System.out.println("Selected: " + feature.toString());
                 }
             }
         }

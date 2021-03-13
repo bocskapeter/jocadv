@@ -108,6 +108,12 @@ public class JoCoordinateSystem extends Feature implements Geometry, Stretchable
     public List<Feature> getFeatures() {
         List<Feature> result = new ArrayList<>();
         result.add(origin);
-        return null;
+        result.add(xAxis);
+        result.add(yAxis);
+        result.add(zAxis);
+        result.add(xyPlane);
+        result.add(yzPlane);
+        result.add(yzPlane);
+        return result;
     }
 }

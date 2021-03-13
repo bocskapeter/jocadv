@@ -6,12 +6,15 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import eu.bopet.jocadv.core.vector.Value;
+import org.apache.commons.math3.geometry.euclidean.threed.Line;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class JoInput implements InputProcessor {
 
     private static final float ZOOM_FACTOR = 0.1f;
     private static final float ROTATE_FACTOR = 0.5f;
-    private static final int CLICK_RADIUS = 5;
+    private static final int CLICK_RADIUS = 14;
 
 
     private OrthographicCamera camera;
@@ -28,12 +31,10 @@ public class JoInput implements InputProcessor {
     private Vector3 direction = new Vector3();
     private Vector3 newPosition = new Vector3();
     private Vector3 centerOfRotation;
-    private Ray pickingRay;
     private Ray rayBeforeZoom;
     private Ray rayAfterZoom;
     private Vector3 moveAfterZoom;
     private JoCADv joCADv;
-
 
 
     public JoInput(JoCADv joCADv) {
@@ -119,18 +120,13 @@ public class JoInput implements InputProcessor {
         rotateX = 0;
         rotateY = 0;
         clickedButton = button;
-        pickingRay = camera.getPickRay(clickX, clickY);
         if (clickedButton == Input.Buttons.LEFT) {
-            Vector3 pick = camera.unproject(new Vector3(clickX,clickY,0));
-            System.out.println(" picking ray: " + pick.toString());
-            int newX = clickX+CLICK_RADIUS;
-            int newY = clickY+CLICK_RADIUS;
-            Vector3 nextPick = camera.unproject(new Vector3(newX,newY,0));
-            System.out.println(" next ray: " + nextPick.toString());
+            Vector3 pick = camera.unproject(new Vector3(clickX, clickY, 0));
+            int newX = clickX + CLICK_RADIUS;
+            int newY = clickY + CLICK_RADIUS;
+            Vector3 nextPick = camera.unproject(new Vector3(newX, newY, 0));
             float distance = pick.dst(nextPick);
-            System.out.println("distance: " + distance);
-            joCADv.pickFeature(pickingRay, distance);
-            // TODO: Select objects
+            joCADv.pickFeature(getPickingLine(), distance);
             return true;
         }
         position = new Vector3(camera.position);
@@ -140,6 +136,14 @@ public class JoInput implements InputProcessor {
         cross = cross.add(up);
         cross = cross.crs(direction);
         return true;
+    }
+
+    private Line getPickingLine() {
+        Vector3 pickedPoint = camera.unproject(new Vector3(clickX, clickY, 0));
+        Vector3D pickingPoint = new Vector3D(pickedPoint.x, pickedPoint.y, pickedPoint.z);
+        Vector3D pointInViewDirection =
+                pickingPoint.add(new Vector3D(camera.direction.x, camera.direction.y, camera.direction.z));
+        return new Line(pickingPoint, pointInViewDirection, Value.TOLERANCE);
     }
 
     @Override
@@ -195,25 +199,22 @@ public class JoInput implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Vector3 pick = camera.unproject(new Vector3(screenX,screenY,0));
-        System.out.println(" picking ray: " + pick.toString());
-        int newX = screenX+CLICK_RADIUS;
-        int newY = screenY+CLICK_RADIUS;
-        Vector3 nextPick = camera.unproject(new Vector3(newX,newY,0));
-        System.out.println(" next ray: " + nextPick.toString());
+        Vector3 pick = camera.unproject(new Vector3(screenX, screenY, 0));
+        int newX = screenX + CLICK_RADIUS;
+        int newY = screenY + CLICK_RADIUS;
+        Vector3 nextPick = camera.unproject(new Vector3(newX, newY, 0));
         float distance = pick.dst(nextPick);
-        System.out.println("distance: " + distance);
         joCADv.setZoomFactor(distance);
         return false;
     }
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        rayBeforeZoom = camera.getPickRay(Gdx.input.getX(),Gdx.input.getY()).cpy();
+        rayBeforeZoom = camera.getPickRay(Gdx.input.getX(), Gdx.input.getY()).cpy();
         camera.viewportHeight = camera.viewportHeight + amountY * ZOOM_FACTOR * camera.viewportHeight;
         camera.viewportWidth = camera.viewportHeight * getRatio();
         camera.update();
-        rayAfterZoom = camera.getPickRay(Gdx.input.getX(),Gdx.input.getY()).cpy();
+        rayAfterZoom = camera.getPickRay(Gdx.input.getX(), Gdx.input.getY()).cpy();
         moveAfterZoom = new Vector3(rayAfterZoom.origin).sub(rayBeforeZoom.origin);
         camera.position.set(camera.position.sub(moveAfterZoom));
         camera.update();

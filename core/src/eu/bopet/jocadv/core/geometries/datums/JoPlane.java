@@ -56,6 +56,7 @@ public class JoPlane extends Feature implements Geometry, Stretchable {
     public void stretchTo(JoVector min, JoVector max) {
         JoVector normal = new JoVector(plane.getNormal());
         Vector3D direction = normal.getMainAbsDirection();
+        
         if (direction == Vector3D.PLUS_I) {
             Plane plane1 = new Plane(max.getVector3D(),Vector3D.PLUS_J,Value.TOLERANCE);
             Plane plane2 = new Plane(max.getVector3D(),Vector3D.PLUS_K,Value.TOLERANCE);
