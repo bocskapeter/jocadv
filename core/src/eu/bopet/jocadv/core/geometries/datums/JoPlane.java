@@ -12,12 +12,12 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import java.util.List;
 
 public class JoPlane extends Feature implements Geometry, Stretchable {
-    public static final JoPlane XY= new JoPlane(new Plane(Vector3D.PLUS_K, Value.TOLERANCE));
-    public static final JoPlane XZ= new JoPlane(new Plane(Vector3D.PLUS_J, Value.TOLERANCE));
-    public static final JoPlane YZ= new JoPlane(new Plane(Vector3D.PLUS_I, Value.TOLERANCE));
+    public static final JoPlane XY = new JoPlane("Plane xy", new Plane(Vector3D.PLUS_K, Value.TOLERANCE));
+    public static final JoPlane XZ = new JoPlane("Plane xz", new Plane(Vector3D.PLUS_J, Value.TOLERANCE));
+    public static final JoPlane YZ = new JoPlane("Plane yz", new Plane(Vector3D.PLUS_I, Value.TOLERANCE));
 
-    private Plane plane;
-    private JoVector normal;
+    private final Plane plane;
+    private final JoVector normal;
     private JoVector p1;
     private JoVector p2;
     private JoVector p3;
@@ -26,6 +26,11 @@ public class JoPlane extends Feature implements Geometry, Stretchable {
     public JoPlane(Plane plane) {
         this.plane = plane;
         this.normal = new JoVector(plane.getNormal());
+    }
+
+    public JoPlane(String name, Plane plane) {
+        this(plane);
+        setName(name);
     }
 
     public Plane getPlane() {
@@ -56,12 +61,12 @@ public class JoPlane extends Feature implements Geometry, Stretchable {
     public void stretchTo(JoVector min, JoVector max) {
         JoVector normal = new JoVector(plane.getNormal());
         Vector3D direction = normal.getMainAbsDirection();
-        
+
         if (direction == Vector3D.PLUS_I) {
-            Plane plane1 = new Plane(max.getVector3D(),Vector3D.PLUS_J,Value.TOLERANCE);
-            Plane plane2 = new Plane(max.getVector3D(),Vector3D.PLUS_K,Value.TOLERANCE);
-            Plane plane3 = new Plane(min.getVector3D(),Vector3D.MINUS_J,Value.TOLERANCE);
-            Plane plane4 = new Plane(min.getVector3D(),Vector3D.MINUS_K,Value.TOLERANCE);
+            Plane plane1 = new Plane(max.getVector3D(), Vector3D.PLUS_J, Value.TOLERANCE);
+            Plane plane2 = new Plane(max.getVector3D(), Vector3D.PLUS_K, Value.TOLERANCE);
+            Plane plane3 = new Plane(min.getVector3D(), Vector3D.MINUS_J, Value.TOLERANCE);
+            Plane plane4 = new Plane(min.getVector3D(), Vector3D.MINUS_K, Value.TOLERANCE);
             Line line1 = plane.intersection(plane1);
             p1 = new JoVector(plane2.intersection(line1));
             p2 = new JoVector(plane4.intersection(line1));
@@ -70,10 +75,10 @@ public class JoPlane extends Feature implements Geometry, Stretchable {
             p4 = new JoVector(plane4.intersection(line2));
         }
         if (direction == Vector3D.PLUS_J) {
-            Plane plane1 = new Plane(max.getVector3D(),Vector3D.PLUS_I,Value.TOLERANCE);
-            Plane plane2 = new Plane(max.getVector3D(),Vector3D.PLUS_K,Value.TOLERANCE);
-            Plane plane3 = new Plane(min.getVector3D(),Vector3D.MINUS_I,Value.TOLERANCE);
-            Plane plane4 = new Plane(min.getVector3D(),Vector3D.MINUS_K,Value.TOLERANCE);
+            Plane plane1 = new Plane(max.getVector3D(), Vector3D.PLUS_I, Value.TOLERANCE);
+            Plane plane2 = new Plane(max.getVector3D(), Vector3D.PLUS_K, Value.TOLERANCE);
+            Plane plane3 = new Plane(min.getVector3D(), Vector3D.MINUS_I, Value.TOLERANCE);
+            Plane plane4 = new Plane(min.getVector3D(), Vector3D.MINUS_K, Value.TOLERANCE);
             Line line1 = plane.intersection(plane1);
             p1 = new JoVector(plane2.intersection(line1));
             p2 = new JoVector(plane4.intersection(line1));
@@ -82,10 +87,10 @@ public class JoPlane extends Feature implements Geometry, Stretchable {
             p4 = new JoVector(plane4.intersection(line2));
         }
         if (direction == Vector3D.PLUS_K) {
-            Plane plane1 = new Plane(max.getVector3D(),Vector3D.PLUS_I,Value.TOLERANCE);
-            Plane plane2 = new Plane(max.getVector3D(),Vector3D.PLUS_J,Value.TOLERANCE);
-            Plane plane3 = new Plane(min.getVector3D(),Vector3D.MINUS_I,Value.TOLERANCE);
-            Plane plane4 = new Plane(min.getVector3D(),Vector3D.MINUS_J,Value.TOLERANCE);
+            Plane plane1 = new Plane(max.getVector3D(), Vector3D.PLUS_I, Value.TOLERANCE);
+            Plane plane2 = new Plane(max.getVector3D(), Vector3D.PLUS_J, Value.TOLERANCE);
+            Plane plane3 = new Plane(min.getVector3D(), Vector3D.MINUS_I, Value.TOLERANCE);
+            Plane plane4 = new Plane(min.getVector3D(), Vector3D.MINUS_J, Value.TOLERANCE);
             Line line1 = plane.intersection(plane1);
             p1 = new JoVector(plane2.intersection(line1));
             p2 = new JoVector(plane4.intersection(line1));

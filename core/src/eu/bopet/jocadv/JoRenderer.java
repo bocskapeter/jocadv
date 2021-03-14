@@ -1,7 +1,8 @@
 package eu.bopet.jocadv;
 
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g3d.Attribute;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -50,9 +51,9 @@ public class JoRenderer {
             if (feature instanceof JoCoordinateSystem) {
                 JoCoordinateSystem coordinateSystem = (JoCoordinateSystem) feature;
                 modelInstances.add(renderPoint(coordinateSystem.getOrigin()));
-                modelInstances.add(renderAxis(coordinateSystem.getxAxis()));
-                modelInstances.add(renderAxis(coordinateSystem.getyAxis()));
-                modelInstances.add(renderAxis(coordinateSystem.getzAxis()));
+                modelInstances.add(renderAxis(coordinateSystem.getXAxis()));
+                modelInstances.add(renderAxis(coordinateSystem.getYAxis()));
+                modelInstances.add(renderAxis(coordinateSystem.getZAxis()));
                 modelInstances.add(renderPlane(coordinateSystem.getXyPlane()));
                 modelInstances.add(renderPlane(coordinateSystem.getXzPlane()));
                 modelInstances.add(renderPlane(coordinateSystem.getYzPlane()));
@@ -88,9 +89,8 @@ public class JoRenderer {
         if (name==null){
             name = "plane";
         }
-
-        Attribute attribute = new ColorAttribute(ColorAttribute.Ambient, JoColors.PLANE_FACE);
-        Material material = new Material(attribute);
+        ColorAttribute colorAttribute = ColorAttribute.createFog(JoColors.PLANE_FACE);
+        Material material = new Material(colorAttribute);
 
         modelBuilder.begin();
         meshPartBuilder = modelBuilder.part(name, 1, 3, material);
@@ -115,14 +115,15 @@ public class JoRenderer {
     }
 
     private ModelInstance renderPoint(JoPoint joPoint) {
-        Vector3 from = joPoint.getVector().getVector3();
+        Vector3 p = joPoint.getVector().getVector3();
+        System.out.println("point: " + p);
         float r = 0.3f;//joCADv.getZoomFactor()*100000000;
-        Vector3 v1 = from.cpy().add(Vector3.X.scl(r));
-        Vector3 v2 = from.cpy().add(Vector3.Y.scl(r));
-        Vector3 v3 = from.cpy().add(Vector3.Z.scl(r));
-        Vector3 v4 = from.cpy().add(Vector3.X.scl(-r));
-        Vector3 v5 = from.cpy().add(Vector3.Y.scl(-r));
-        Vector3 v6 = from.cpy().add(Vector3.Z.scl(-r));
+        Vector3 v1 = p.cpy().add(Vector3.X.scl(r));
+        Vector3 v2 = p.cpy().add(Vector3.Y.scl(r));
+        Vector3 v3 = p.cpy().add(Vector3.Z.scl(r));
+        Vector3 v4 = p.cpy().add(Vector3.X.scl(r));
+        Vector3 v5 = p.cpy().add(Vector3.Y.scl(r));
+        Vector3 v6 = p.cpy().add(Vector3.Z.scl(r));
         modelBuilder.begin();
         meshPartBuilder = modelBuilder.part("point", 1, 3, new Material());
         if (joPoint.isSelected()) {

@@ -13,15 +13,20 @@ import java.util.List;
 
 public class JoAxis extends Feature implements Geometry, Stretchable {
 
-    public static final JoAxis X_AXIS = new JoAxis(new Line(Vector3D.ZERO, Vector3D.PLUS_I, Value.TOLERANCE));
-    public static final JoAxis Y_AXIS = new JoAxis(new Line(Vector3D.ZERO, Vector3D.PLUS_J, Value.TOLERANCE));
-    public static final JoAxis Z_AXIS = new JoAxis(new Line(Vector3D.ZERO, Vector3D.PLUS_K, Value.TOLERANCE));
+    public static final JoAxis X_AXIS = new JoAxis("Axis x", new Line(Vector3D.ZERO, Vector3D.PLUS_I, Value.TOLERANCE));
+    public static final JoAxis Y_AXIS = new JoAxis("Axis y", new Line(Vector3D.ZERO, Vector3D.PLUS_J, Value.TOLERANCE));
+    public static final JoAxis Z_AXIS = new JoAxis("Axis z", new Line(Vector3D.ZERO, Vector3D.PLUS_K, Value.TOLERANCE));
 
-    private Line line;
+    private final Line line;
     private JoVector p1;
     private JoVector p2;
 
     public JoAxis(Line line) {
+        this.line = line;
+    }
+
+    public JoAxis(String name, Line line) {
+        setName(name);
         this.line = line;
     }
 

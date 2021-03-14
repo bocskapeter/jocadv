@@ -201,12 +201,6 @@ public class JoInput implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Vector3 pick = camera.unproject(new Vector3(screenX, screenY, 0));
-        int newX = screenX + CLICK_RADIUS;
-        int newY = screenY + CLICK_RADIUS;
-        Vector3 nextPick = camera.unproject(new Vector3(newX, newY, 0));
-        float distance = pick.dst(nextPick);
-        joCADv.setZoomFactor(distance);
         return false;
     }
 

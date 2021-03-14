@@ -10,20 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JoCoordinateSystem extends Feature implements Geometry, Stretchable {
-    public static final JoCoordinateSystem DEFAULT = new JoCoordinateSystem(
+    public static final JoCoordinateSystem DEFAULT = new JoCoordinateSystem( "CS default",
             JoPoint.ORIGIN,
             JoAxis.X_AXIS, JoAxis.Y_AXIS, JoAxis.Z_AXIS,
             JoPlane.XY, JoPlane.XZ, JoPlane.YZ);
 
-    private JoPoint origin;
-    private JoAxis xAxis;
-    private JoAxis yAxis;
-    private JoAxis zAxis;
-    private JoPlane xyPlane;
-    private JoPlane xzPlane;
-    private JoPlane yzPlane;
+    private final JoPoint origin;
+    private final JoAxis xAxis;
+    private final JoAxis yAxis;
+    private final JoAxis zAxis;
+    private final JoPlane xyPlane;
+    private final JoPlane xzPlane;
+    private final JoPlane yzPlane;
 
-    public JoCoordinateSystem(JoPoint origin, JoAxis xAxis, JoAxis yAxis, JoAxis zAxis, JoPlane xyPlane, JoPlane xzPlane, JoPlane yzPlane) {
+    public JoCoordinateSystem(JoPoint origin,
+                              JoAxis xAxis, JoAxis yAxis, JoAxis zAxis,
+                              JoPlane xyPlane, JoPlane xzPlane, JoPlane yzPlane) {
         this.origin = origin;
         this.xAxis = xAxis;
         this.yAxis = yAxis;
@@ -31,62 +33,42 @@ public class JoCoordinateSystem extends Feature implements Geometry, Stretchable
         this.xyPlane = xyPlane;
         this.xzPlane = xzPlane;
         this.yzPlane = yzPlane;
+    }
+
+    public JoCoordinateSystem(String name,
+                              JoPoint origin,
+                              JoAxis xAxis, JoAxis yAxis, JoAxis zAxis,
+                              JoPlane xy, JoPlane xz, JoPlane yz) {
+        this(origin,xAxis,yAxis,zAxis,xy,xz,yz);
+        setName(name);
     }
 
     public JoPoint getOrigin() {
         return origin;
     }
 
-    public void setOrigin(JoPoint origin) {
-        this.origin = origin;
-    }
-
-    public JoAxis getxAxis() {
+    public JoAxis getXAxis() {
         return xAxis;
     }
 
-    public void setxAxis(JoAxis xAxis) {
-        this.xAxis = xAxis;
-    }
-
-    public JoAxis getyAxis() {
+    public JoAxis getYAxis() {
         return yAxis;
     }
 
-    public void setyAxis(JoAxis yAxis) {
-        this.yAxis = yAxis;
-    }
-
-    public JoAxis getzAxis() {
+    public JoAxis getZAxis() {
         return zAxis;
-    }
-
-    public void setzAxis(JoAxis zAxis) {
-        this.zAxis = zAxis;
     }
 
     public JoPlane getXyPlane() {
         return xyPlane;
     }
 
-    public void setXyPlane(JoPlane xyPlane) {
-        this.xyPlane = xyPlane;
-    }
-
     public JoPlane getXzPlane() {
         return xzPlane;
     }
 
-    public void setXzPlane(JoPlane xzPlane) {
-        this.xzPlane = xzPlane;
-    }
-
     public JoPlane getYzPlane() {
         return yzPlane;
-    }
-
-    public void setYzPlane(JoPlane yzPlane) {
-        this.yzPlane = yzPlane;
     }
 
     @Override

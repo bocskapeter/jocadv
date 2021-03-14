@@ -9,12 +9,17 @@ import java.util.List;
 
 public class JoPoint extends Feature implements Geometry {
 
-    public static final JoPoint ORIGIN = new JoPoint(JoVector.ZERO);
+    public static final JoPoint ORIGIN = new JoPoint("Point origin", JoVector.ZERO);
 
-    private JoVector vector;
+    private final JoVector vector;
 
     public JoPoint(JoVector vector) {
         this.vector = vector;
+    }
+
+    public JoPoint(String name, JoVector vector) {
+        this(vector);
+        setName(name);
     }
 
     public JoVector getVector() {

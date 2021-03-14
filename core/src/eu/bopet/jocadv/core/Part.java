@@ -21,9 +21,10 @@ public class Part extends Feature implements Geometry {
     JoVector min;
     JoVector max;
 
-    public Part() {
+    public Part(String name) {
         features = new ArrayList<>();
         parts = new ArrayList<>();
+        setName(name);
 
         min = new JoVector(new Vector3D(-10, -11, -12));
         max = new JoVector(new Vector3D(13, 14, 15));
@@ -56,7 +57,7 @@ public class Part extends Feature implements Geometry {
                     if (!features.contains(subFeature)) features.add(subFeature);
                 }
         }
-        features.add(feature);
+        if (!features.contains(feature)) features.add(feature);
         stretch();
     }
 

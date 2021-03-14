@@ -2,7 +2,6 @@ package eu.bopet.jocadv;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,21 +12,14 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.collision.Ray;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Part;
 import eu.bopet.jocadv.core.features.Feature;
-import eu.bopet.jocadv.core.geometries.datums.JoAxis;
-import eu.bopet.jocadv.core.vector.JoVector;
-import eu.bopet.jocadv.core.vector.Value;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.badlogic.gdx.graphics.GL20.GL_POINTS;
 
 public class JoCADv extends ApplicationAdapter {
 
@@ -35,6 +27,7 @@ public class JoCADv extends ApplicationAdapter {
     private JoRenderer renderer;
     private List<Part> parts;
     private Part currentPart;
+    private List<Feature> selected;
 
     private Environment environment;
     private OrthographicCamera cam;
@@ -42,6 +35,9 @@ public class JoCADv extends ApplicationAdapter {
     private SpriteBatch spriteBatch;
     private BitmapFont font;
     private String text;
+    private String part="Current part: ";
+    private String command="Ready";
+    private String selection = "Selection:\n";
 
     public ModelBatch modelBatch;
 
@@ -52,7 +48,9 @@ public class JoCADv extends ApplicationAdapter {
     public void create() {
 
         parts = new ArrayList<>();
-        currentPart = new Part();
+        currentPart = new Part("Test");
+        selected = new ArrayList<>();
+        part = part + currentPart.getName();
 
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
@@ -111,8 +109,10 @@ public class JoCADv extends ApplicationAdapter {
 
         spriteBatch.begin();
         text = "FPS: " + Gdx.graphics.getFramesPerSecond();
-        text = text + "\n" + FreeTypeFontGenerator.DEFAULT_CHARS;
-        font.draw(spriteBatch, text, 10, Gdx.graphics.getHeight() - 10);
+        font.draw(spriteBatch, text, 10, 30);
+        font.draw(spriteBatch, part, 10, Gdx.graphics.getHeight() - 10);
+        font.draw(spriteBatch, command, 10, Gdx.graphics.getHeight() - 30);
+        font.draw(spriteBatch, selection, 10, Gdx.graphics.getHeight() - 50);
         spriteBatch.end();
     }
 
@@ -138,7 +138,14 @@ public class JoCADv extends ApplicationAdapter {
                 Geometry geometry = (Geometry) feature;
                 if (geometry.distance(pickingRay) < distance) {
                     ((Feature) geometry).setSelected(true);
-                    System.out.println("Selected: " + feature.toString());
+                    if (!selected.contains(feature)){
+                        selected.add(feature);
+                        String name = feature.getName();
+                        if (name==null) {
+                            name = feature.toString();
+                        }
+                        selection = selection + name + "\n";
+                    }
                 }
             }
         }
@@ -160,11 +167,12 @@ public class JoCADv extends ApplicationAdapter {
                 ((Feature) geometry).setSelected(false);
             }
         }
-        System.out.println("Deselected. ");
+        selected = new ArrayList<>();
+        selection = "Selection:\n";
         renderFeatures();
     }
 
-    public void renderFeatures(){
+    public void renderFeatures() {
         renderer.renderFeatures();
     }
 }

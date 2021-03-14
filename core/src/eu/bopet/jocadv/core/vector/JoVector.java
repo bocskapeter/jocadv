@@ -10,14 +10,10 @@ public class JoVector {
     public static final JoVector PLUS_J = new JoVector(Vector3D.PLUS_J);
     public static final JoVector PLUS_K = new JoVector(Vector3D.PLUS_K);
 
-    private Vector3D vector3D;
+    private final Vector3D vector3D;
 
     public JoVector(Vector3D vector3D) {
         this.vector3D = vector3D;
-    }
-
-    public JoVector(Vector3 vector3) {
-        this.vector3D = new Vector3D(vector3.x, vector3.y, vector3.z);
     }
 
     public Vector3D getVector3D() {
