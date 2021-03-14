@@ -1,9 +1,11 @@
 package eu.bopet.jocadv;
 
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
@@ -43,14 +45,14 @@ public class JoRenderer {
                 modelInstances.add(renderPoint((JoPoint) feature));
             }
             if (feature instanceof JoAxis) {
-                modelInstances.add(renderAxis((JoAxis) feature, Color.CORAL));
+                modelInstances.add(renderAxis((JoAxis) feature));
             }
             if (feature instanceof JoCoordinateSystem) {
                 JoCoordinateSystem coordinateSystem = (JoCoordinateSystem) feature;
                 modelInstances.add(renderPoint(coordinateSystem.getOrigin()));
-                modelInstances.add(renderAxis(coordinateSystem.getxAxis(), Color.RED));
-                modelInstances.add(renderAxis(coordinateSystem.getyAxis(), Color.GREEN));
-                modelInstances.add(renderAxis(coordinateSystem.getzAxis(), Color.BLUE));
+                modelInstances.add(renderAxis(coordinateSystem.getxAxis()));
+                modelInstances.add(renderAxis(coordinateSystem.getyAxis()));
+                modelInstances.add(renderAxis(coordinateSystem.getzAxis()));
                 modelInstances.add(renderPlane(coordinateSystem.getXyPlane()));
                 modelInstances.add(renderPlane(coordinateSystem.getXzPlane()));
                 modelInstances.add(renderPlane(coordinateSystem.getYzPlane()));
@@ -82,17 +84,33 @@ public class JoRenderer {
         Vector3 p3 = joPlane.getP3().getVector3();
         Vector3 p4 = joPlane.getP4().getVector3();
         Vector3 normal = joPlane.getNormal().getVector3();
+        String name = joPlane.getName();
+        if (name==null){
+            name = "plane";
+        }
+
+        Attribute attribute = new ColorAttribute(ColorAttribute.Ambient, JoColors.PLANE_FACE);
+        Material material = new Material(attribute);
+
         modelBuilder.begin();
-        meshPartBuilder = modelBuilder.part("plane", 1, 3, new Material());
-        meshPartBuilder.setColor(JoColors.PLANE);
-        meshPartBuilder.setUVRange(0.5f, 0f, 0f, 0.5f);
+        meshPartBuilder = modelBuilder.part(name, 1, 3, material);
+        if (joPlane.isSelected()) {
+            meshPartBuilder.setColor(JoColors.PLANE_SELECTED);
+        } else {
+            meshPartBuilder.setColor(JoColors.PLANE);
+        }
         meshPartBuilder.rect(p1, p3, p4, p2, normal);
         Model plane = modelBuilder.end();
-
         return new ModelInstance(plane);
     }
 
-    private ModelInstance renderAxis(JoAxis joAxis, Color color) {
+    private ModelInstance renderAxis(JoAxis joAxis) {
+        Color color;
+        if (joAxis.isSelected()){
+            color = JoColors.AXIS_SELECTED;
+        } else {
+            color = JoColors.AXIS;
+        }
         return renderLine(joAxis.getP1().getVector3(), joAxis.getP2().getVector3(), color);
     }
 
@@ -107,7 +125,11 @@ public class JoRenderer {
         Vector3 v6 = from.cpy().add(Vector3.Z.scl(-r));
         modelBuilder.begin();
         meshPartBuilder = modelBuilder.part("point", 1, 3, new Material());
-        meshPartBuilder.setColor(Color.BROWN);
+        if (joPoint.isSelected()) {
+            meshPartBuilder.setColor(JoColors.POINT_SELECTED);
+        } else {
+            meshPartBuilder.setColor(JoColors.POINT);
+        }
         meshPartBuilder.triangle(v1,v2,v3);
         meshPartBuilder.triangle(v2,v3,v4);
         meshPartBuilder.triangle(v4,v5,v6);

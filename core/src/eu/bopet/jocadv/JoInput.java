@@ -182,7 +182,6 @@ public class JoInput implements InputProcessor {
         camera.rotateAround(centerOfRotation, cross, -rotateY * ROTATE_FACTOR);
         rotateX = dx;
         rotateY = dy;
-
     }
 
     private void move(int dx, int dy) {

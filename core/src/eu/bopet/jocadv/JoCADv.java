@@ -46,7 +46,6 @@ public class JoCADv extends ApplicationAdapter {
     public ModelBatch modelBatch;
 
     private ShapeRenderer shapeRenderer;
-    ImmediateModeRenderer20 immediateRenderer;
     private float zoomFactor = 1;
 
     @Override
@@ -88,9 +87,7 @@ public class JoCADv extends ApplicationAdapter {
         Gdx.input.setInputProcessor(input);
 
         renderer = new JoRenderer(this, currentPart.getFeatures(), cam);
-        renderer.renderFeatures();
-
-        immediateRenderer = new ImmediateModeRenderer20(50000, false, true, 0);
+        renderFeatures();
     }
 
     @Override
@@ -117,12 +114,6 @@ public class JoCADv extends ApplicationAdapter {
         text = text + "\n" + FreeTypeFontGenerator.DEFAULT_CHARS;
         font.draw(spriteBatch, text, 10, Gdx.graphics.getHeight() - 10);
         spriteBatch.end();
-
-        immediateRenderer.begin(cam.combined, GL_POINTS);
-        immediateRenderer.color(Color.WHITE);
-        immediateRenderer.vertex(1, 1, 1);
-        immediateRenderer.end();
-
     }
 
     @Override
@@ -151,7 +142,7 @@ public class JoCADv extends ApplicationAdapter {
                 }
             }
         }
-        renderer.renderFeatures();
+        renderFeatures();
     }
 
     public float getZoomFactor() {
@@ -169,6 +160,11 @@ public class JoCADv extends ApplicationAdapter {
                 ((Feature) geometry).setSelected(false);
             }
         }
+        System.out.println("Deselected. ");
+        renderFeatures();
+    }
+
+    public void renderFeatures(){
         renderer.renderFeatures();
     }
 }

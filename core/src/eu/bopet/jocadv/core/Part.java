@@ -24,20 +24,22 @@ public class Part extends Feature implements Geometry {
     public Part() {
         features = new ArrayList<>();
         parts = new ArrayList<>();
-        features.add(JoCoordinateSystem.DEFAULT);
-        features.add(new JoPlane(new Plane(Vector3D.PLUS_J,new Vector3D(4,5,6), Value.TOLERANCE)));
-        features.add(new JoAxis(new Line(new Vector3D(2,3,8),new Vector3D(0,1,9),Value.TOLERANCE)));
-        features.add(new JoPoint(new JoVector(new Vector3D(1,2,3))));
 
-        min = new JoVector(new Vector3D(-10,-11,-12));
-        max = new JoVector(new Vector3D(13,14,15));
+        min = new JoVector(new Vector3D(-10, -11, -12));
+        max = new JoVector(new Vector3D(13, 14, 15));
+
+        addFeature(JoCoordinateSystem.DEFAULT);
+        addFeature(new JoPlane(new Plane(Vector3D.PLUS_J, new Vector3D(4, 5, 6), Value.TOLERANCE)));
+        addFeature(new JoAxis(new Line(new Vector3D(2, 3, 8), new Vector3D(0, 1, 9), Value.TOLERANCE)));
+        addFeature(new JoPoint(new JoVector(new Vector3D(1, 2, 3))));
+
         stretch();
     }
 
-    private void stretch(){
-        for (Feature feature: features){
+    private void stretch() {
+        for (Feature feature : features) {
             if (feature instanceof Stretchable) {
-                ((Stretchable) feature).stretchTo(min,max);
+                ((Stretchable) feature).stretchTo(min, max);
             }
         }
     }
@@ -47,6 +49,13 @@ public class Part extends Feature implements Geometry {
     }
 
     public void addFeature(Feature feature) {
+        if (feature instanceof Geometry) {
+            List<Feature> subgeometries = ((Geometry) feature).getFeatures();
+            if (subgeometries != null)
+                for (Feature subFeature : subgeometries) {
+                    if (!features.contains(subFeature)) features.add(subFeature);
+                }
+        }
         features.add(feature);
         stretch();
     }

@@ -113,7 +113,7 @@ public class JoCoordinateSystem extends Feature implements Geometry, Stretchable
         result.add(zAxis);
         result.add(xyPlane);
         result.add(yzPlane);
-        result.add(yzPlane);
+        result.add(xzPlane);
         return result;
     }
 }
