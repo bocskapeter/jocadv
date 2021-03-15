@@ -101,9 +101,9 @@ public class JoInput implements InputProcessor {
     }
 
     private void resetView() {
-        camera.position.set(100f, 100f, 100f);
+        camera.position.set(100f, -100f, 100f);
         camera.lookAt(0, 0, 0);
-        camera.up.set(new Vector3(0, 1, 0));
+        camera.up.set(new Vector3(0, 0, 1));
     }
 
     @Override

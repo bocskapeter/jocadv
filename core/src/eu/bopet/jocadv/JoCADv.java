@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Part;
@@ -93,8 +94,9 @@ public class JoCADv extends ApplicationAdapter {
         cam = new OrthographicCamera(640, 640 * ((float) Gdx.graphics.getHeight()
                 / (float) Gdx.graphics.getWidth()));
 
-        cam.position.set(100f, 100f, 100f);
+        cam.position.set(100f, -100f, 100f);
         cam.lookAt(0, 0, 0);
+        cam.up.set(new Vector3(0, 0, 1));
         cam.near = -3000f;
         cam.far = 3000f;
         cam.update();
