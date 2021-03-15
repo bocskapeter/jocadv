@@ -86,9 +86,6 @@ public class JoCADv extends ApplicationAdapter {
         texture = new Texture(Gdx.files.internal("dot.png"));
         decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
 
-
-
-
         modelBatch = new ModelBatch();
 
         cam = new OrthographicCamera(640, 640 * ((float) Gdx.graphics.getHeight()
