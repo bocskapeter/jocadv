@@ -116,14 +116,13 @@ public class JoRenderer {
 
     private ModelInstance renderPoint(JoPoint joPoint) {
         Vector3 p = joPoint.getVector().getVector3();
-        System.out.println("point: " + p);
         float r = 0.3f;//joCADv.getZoomFactor()*100000000;
         Vector3 v1 = p.cpy().add(Vector3.X.scl(r));
         Vector3 v2 = p.cpy().add(Vector3.Y.scl(r));
         Vector3 v3 = p.cpy().add(Vector3.Z.scl(r));
-        Vector3 v4 = p.cpy().add(Vector3.X.scl(r));
-        Vector3 v5 = p.cpy().add(Vector3.Y.scl(r));
-        Vector3 v6 = p.cpy().add(Vector3.Z.scl(r));
+        Vector3 v4 = p.cpy().add(Vector3.X.scl(-r));
+        Vector3 v5 = p.cpy().add(Vector3.Y.scl(-r));
+        Vector3 v6 = p.cpy().add(Vector3.Z.scl(-r));
         modelBuilder.begin();
         meshPartBuilder = modelBuilder.part("point", 1, 3, new Material());
         if (joPoint.isSelected()) {
