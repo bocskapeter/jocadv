@@ -214,6 +214,13 @@ public class JoInput implements InputProcessor {
         moveAfterZoom = new Vector3(rayAfterZoom.origin).sub(rayBeforeZoom.origin);
         camera.position.set(camera.position.sub(moveAfterZoom));
         camera.update();
+
+        Vector3 pick = camera.unproject(new Vector3(clickX, clickY, 0));
+        int newX = clickX + CLICK_RADIUS;
+        int newY = clickY + CLICK_RADIUS;
+        Vector3 nextPick = camera.unproject(new Vector3(newX, newY, 0));
+        float distance = pick.dst(nextPick);
+        joCADv.setZoomFactor(distance);
         return true;
     }
 }

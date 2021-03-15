@@ -13,6 +13,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Part extends Feature implements Geometry {
 
@@ -30,10 +31,6 @@ public class Part extends Feature implements Geometry {
         max = new JoVector(new Vector3D(13, 14, 15));
 
         addFeature(JoCoordinateSystem.DEFAULT);
-        addFeature(new JoPlane(new Plane(Vector3D.PLUS_J, new Vector3D(4, 5, 6), Value.TOLERANCE)));
-        addFeature(new JoAxis(new Line(new Vector3D(2, 3, 8), new Vector3D(0, 1, 9), Value.TOLERANCE)));
-        addFeature(new JoPoint(new JoVector(new Vector3D(1, 2, 3))));
-
         stretch();
     }
 

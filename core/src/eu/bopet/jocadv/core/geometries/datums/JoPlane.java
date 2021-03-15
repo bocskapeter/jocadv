@@ -8,6 +8,7 @@ import eu.bopet.jocadv.core.vector.Value;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 import org.apache.commons.math3.geometry.euclidean.threed.Plane;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.math3.util.FastMath;
 
 import java.util.List;
 
@@ -103,6 +104,10 @@ public class JoPlane extends Feature implements Geometry, Stretchable {
 
     @Override
     public double distance(Line pickingLine) {
+        double dot = FastMath.abs(pickingLine.getDirection().dotProduct(normal.getVector3D()));
+        if (dot<Value.TOLERANCE) {
+            return Double.POSITIVE_INFINITY;
+        }
         return 0;
     }
 

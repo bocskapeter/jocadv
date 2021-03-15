@@ -43,14 +43,14 @@ public class JoRenderer {
     public void renderFeatures() {
         for (Feature feature : features) {
             if (feature instanceof JoPoint) {
-                modelInstances.add(renderPoint((JoPoint) feature));
+                renderPoint((JoPoint) feature);
             }
             if (feature instanceof JoAxis) {
                 modelInstances.add(renderAxis((JoAxis) feature));
             }
             if (feature instanceof JoCoordinateSystem) {
                 JoCoordinateSystem coordinateSystem = (JoCoordinateSystem) feature;
-                modelInstances.add(renderPoint(coordinateSystem.getOrigin()));
+                renderPoint(coordinateSystem.getOrigin());
                 modelInstances.add(renderAxis(coordinateSystem.getXAxis()));
                 modelInstances.add(renderAxis(coordinateSystem.getYAxis()));
                 modelInstances.add(renderAxis(coordinateSystem.getZAxis()));
@@ -114,27 +114,7 @@ public class JoRenderer {
         return renderLine(joAxis.getP1().getVector3(), joAxis.getP2().getVector3(), color);
     }
 
-    private ModelInstance renderPoint(JoPoint joPoint) {
-        Vector3 p = joPoint.getVector().getVector3();
-        float r = 0.3f;//joCADv.getZoomFactor()*100000000;
-        Vector3 v1 = p.cpy().add(Vector3.X.scl(r));
-        Vector3 v2 = p.cpy().add(Vector3.Y.scl(r));
-        Vector3 v3 = p.cpy().add(Vector3.Z.scl(r));
-        Vector3 v4 = p.cpy().add(Vector3.X.scl(-r));
-        Vector3 v5 = p.cpy().add(Vector3.Y.scl(-r));
-        Vector3 v6 = p.cpy().add(Vector3.Z.scl(-r));
-        modelBuilder.begin();
-        meshPartBuilder = modelBuilder.part("point", 1, 3, new Material());
-        if (joPoint.isSelected()) {
-            meshPartBuilder.setColor(JoColors.POINT_SELECTED);
-        } else {
-            meshPartBuilder.setColor(JoColors.POINT);
-        }
-        meshPartBuilder.triangle(v1,v2,v3);
-        meshPartBuilder.triangle(v2,v3,v4);
-        meshPartBuilder.triangle(v4,v5,v6);
-        meshPartBuilder.triangle(v5,v6,v1);
-        Model point = modelBuilder.end();
-        return new ModelInstance(point);
+    private void renderPoint(JoPoint joPoint) {
+        joCADv.addPoint(joPoint);
     }
 }
