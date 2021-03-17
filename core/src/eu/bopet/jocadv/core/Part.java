@@ -31,6 +31,7 @@ public class Part extends Feature implements Geometry {
         max = new JoVector(new Vector3D(13, 14, 15));
 
         addFeature(JoCoordinateSystem.DEFAULT);
+        addFeature(new JoPoint(new JoVector(new Vector3D(1,1,1))));
         stretch();
     }
 

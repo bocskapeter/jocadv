@@ -114,6 +114,7 @@ public class JoCADv extends ApplicationAdapter {
                 GL20.GL_DEPTH_BUFFER_BIT |
                 (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
 
         cam.update();
 
@@ -147,7 +148,7 @@ public class JoCADv extends ApplicationAdapter {
                 decal.setColor(JoColors.POINT);
             }
             decal.lookAt(cam.position, cam.up);
-            decal.setScale(zoomFactor/3);
+            decal.setScale(zoomFactor*0.7f);
             decalBatch.add(decal);
         }
         decalBatch.flush();
@@ -220,5 +221,13 @@ public class JoCADv extends ApplicationAdapter {
         decal.setBlending(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         decal.setPosition(joPoint.getVector().getVector3());
         points.put(joPoint,decal);
+    }
+
+    public void commandNew() {
+        command = "New feature, select feature typ";
+    }
+
+    public void commandEdit() {
+        command = "Edit feature, select feature to edit";
     }
 }
