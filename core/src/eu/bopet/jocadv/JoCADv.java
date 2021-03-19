@@ -19,9 +19,17 @@ import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisTable;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Part;
+import eu.bopet.jocadv.core.features.Extrude;
 import eu.bopet.jocadv.core.features.Feature;
+import eu.bopet.jocadv.core.features.Revolve;
+import eu.bopet.jocadv.core.features.Sketch;
+import eu.bopet.jocadv.core.geometries.datums.JoAxis;
+import eu.bopet.jocadv.core.geometries.datums.JoCoordinateSystem;
+import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
@@ -38,6 +46,7 @@ public class JoCADv extends ApplicationAdapter {
     private List<Part> parts;
     private Part currentPart;
     private List<Feature> selected;
+    private Map<String,Class> featureTypes;
 
     private Environment environment;
     private OrthographicCamera cam;
@@ -59,6 +68,8 @@ public class JoCADv extends ApplicationAdapter {
 
     @Override
     public void create() {
+
+        init();
 
         parts = new ArrayList<>();
         currentPart = new Part("Test");
@@ -103,6 +114,25 @@ public class JoCADv extends ApplicationAdapter {
 
         renderer = new JoRenderer(this, currentPart.getFeatures(), cam);
         renderFeatures();
+
+        initGUI();
+    }
+
+    private void initGUI() {
+        VisUI.load();
+        VisTable table = new VisTable(true);
+        table.addSeparator(true);
+    }
+
+    private void init() {
+        featureTypes = new HashMap<>();
+        featureTypes.put("Datum Point", JoPoint.class);
+        featureTypes.put("Datum Axis", JoAxis.class);
+        featureTypes.put("Datum Plane", JoPlane.class);
+        featureTypes.put("Datum CS", JoCoordinateSystem.class);
+        featureTypes.put("Sketch", Sketch.class);
+        featureTypes.put("Extrude", Extrude.class);
+        featureTypes.put("Revolve", Revolve.class);
     }
 
     @Override
@@ -127,15 +157,6 @@ public class JoCADv extends ApplicationAdapter {
         }
         modelBatch.end();
 
-        spriteBatch.begin();
-        text = "FPS: " + Gdx.graphics.getFramesPerSecond();
-        font.draw(spriteBatch, text, 10, 30);
-        font.draw(spriteBatch, part, 10, Gdx.graphics.getHeight() - 10);
-        font.draw(spriteBatch, command, 10, Gdx.graphics.getHeight() - 30);
-        font.draw(spriteBatch, selection, 10, Gdx.graphics.getHeight() - 50);
-        spriteBatch.end();
-
-
         decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
         Iterator it = points.entrySet().iterator();
         while (it.hasNext()){
@@ -152,12 +173,23 @@ public class JoCADv extends ApplicationAdapter {
             decalBatch.add(decal);
         }
         decalBatch.flush();
+
+
+        spriteBatch.begin();
+        text = "FPS: " + Gdx.graphics.getFramesPerSecond();
+        font.draw(spriteBatch, text, 10, 30);
+        font.draw(spriteBatch, part, 10, Gdx.graphics.getHeight() - 10);
+        font.draw(spriteBatch, command, 10, Gdx.graphics.getHeight() - 30);
+        font.draw(spriteBatch, selection, 10, Gdx.graphics.getHeight() - 50);
+        spriteBatch.end();
     }
 
     @Override
     public void dispose() {
         modelBatch.dispose();
+        spriteBatch.dispose();
         decalBatch.dispose();
+        VisUI.dispose();
     }
 
     @Override
@@ -225,6 +257,7 @@ public class JoCADv extends ApplicationAdapter {
 
     public void commandNew() {
         command = "New feature, select feature typ";
+
     }
 
     public void commandEdit() {

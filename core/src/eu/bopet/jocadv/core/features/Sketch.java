@@ -4,9 +4,7 @@ import eu.bopet.jocadv.core.constraints.Constraint;
 import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.solver.Solver;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Sketch extends Feature {
@@ -46,13 +44,6 @@ public class Sketch extends Feature {
     }
 
     private Constraint isNewConstraint(Constraint constraint) {
-        for (Constraint c : constraints) {
-            if (c.getClass().equals(constraint.getClass())) {
-                List gOld = c.getGeometries();
-                List gNew = constraint.getGeometries();
-                if (new HashSet<>(gOld).equals(new HashSet(gNew))) return c;
-            }
-        }
         return null;
     }
 
