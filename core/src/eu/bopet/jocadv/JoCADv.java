@@ -287,6 +287,10 @@ public class JoCADv extends ApplicationAdapter {
             if (pos < 0) pos = selected.size() - 1;
             if (pos >= selected.size()) pos = 0;
             currentSelected = selected.get(pos);
+            for (Feature feature: selected){
+                feature.setSelected(false);
+            }
+            currentSelected.setSelected(true);
             selection = "Current selection: " + featureGetName(currentSelected);
             renderFeatures();
         }
