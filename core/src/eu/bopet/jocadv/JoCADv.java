@@ -260,12 +260,18 @@ public class JoCADv extends ApplicationAdapter {
     }
 
     public void commandNew() {
-        command = "New feature, select feature typ";
-
+        command = "Select feature typ to create new";
+        selectionList = "Selection:\n";
+        Iterator it = featureTypes.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            selectionList = selectionList + key  + "\n";
+        }
     }
 
     public void commandEdit() {
-        command = "Edit feature, select feature to edit";
+        command = "Select feature to edit";
     }
 
     public void selectionConfirmed() {
