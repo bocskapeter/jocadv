@@ -18,9 +18,6 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
-import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.widget.VisTable;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Part;
 import eu.bopet.jocadv.core.features.Extrude;
@@ -33,11 +30,7 @@ import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JoCADv extends ApplicationAdapter {
 
@@ -46,17 +39,20 @@ public class JoCADv extends ApplicationAdapter {
     private List<Part> parts;
     private Part currentPart;
     private List<Feature> selected;
-    private Map<String,Class> featureTypes;
+    private Feature currentSelected;
+    private Map<String, Class> featureTypes;
 
     private Environment environment;
     private OrthographicCamera cam;
 
     private SpriteBatch spriteBatch;
     private BitmapFont font;
+    private BitmapFont fontSelected;
     private String text;
-    private String part="Current part: ";
-    private String command="Ready";
-    private String selection = "Selection:\n";
+    private String part = "Current part: ";
+    private String command = "Ready";
+    private String selection = "Current selection: ";
+    private String selectionList = "Selection:\n";
 
     public ModelBatch modelBatch;
 
@@ -83,16 +79,7 @@ public class JoCADv extends ApplicationAdapter {
 
         spriteBatch = new SpriteBatch();
 
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(
-                "Isonorm-3098-Regular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 18;
-        parameter.borderColor = JoColors.FONT_BORDER;
-        parameter.color = JoColors.FONT;
-        parameter.borderWidth = 2;
-        font = generator.generateFont(parameter);
-        generator.dispose();
+        generateFonts();
 
         texture = new Texture(Gdx.files.internal("dot.png"));
         decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
@@ -114,14 +101,20 @@ public class JoCADv extends ApplicationAdapter {
 
         renderer = new JoRenderer(this, currentPart.getFeatures(), cam);
         renderFeatures();
-
-        initGUI();
     }
 
-    private void initGUI() {
-        VisUI.load();
-        VisTable table = new VisTable(true);
-        table.addSeparator(true);
+    private void generateFonts() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(
+                "Isonorm-3098-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 18;
+        parameter.borderColor = JoColors.FONT_BORDER;
+        parameter.color = JoColors.FONT;
+        parameter.borderWidth = 2;
+        font = generator.generateFont(parameter);
+        parameter.color = JoColors.FONT_SELECTED;
+        fontSelected = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     private void init() {
@@ -159,17 +152,17 @@ public class JoCADv extends ApplicationAdapter {
 
         decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
         Iterator it = points.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
             JoPoint point = (JoPoint) pair.getKey();
             Decal decal = (Decal) pair.getValue();
-            if (point.isSelected()){
+            if (point.isSelected()) {
                 decal.setColor(JoColors.POINT_SELECTED);
             } else {
                 decal.setColor(JoColors.POINT);
             }
             decal.lookAt(cam.position, cam.up);
-            decal.setScale(zoomFactor*0.7f);
+            decal.setScale(zoomFactor * 0.7f);
             decalBatch.add(decal);
         }
         decalBatch.flush();
@@ -180,7 +173,8 @@ public class JoCADv extends ApplicationAdapter {
         font.draw(spriteBatch, text, 10, 30);
         font.draw(spriteBatch, part, 10, Gdx.graphics.getHeight() - 10);
         font.draw(spriteBatch, command, 10, Gdx.graphics.getHeight() - 30);
-        font.draw(spriteBatch, selection, 10, Gdx.graphics.getHeight() - 50);
+        fontSelected.draw(spriteBatch, selection, 10, Gdx.graphics.getHeight() - 50);
+        font.draw(spriteBatch, selectionList, 10, Gdx.graphics.getHeight() - 70);
         spriteBatch.end();
     }
 
@@ -189,7 +183,6 @@ public class JoCADv extends ApplicationAdapter {
         modelBatch.dispose();
         spriteBatch.dispose();
         decalBatch.dispose();
-        VisUI.dispose();
     }
 
     @Override
@@ -209,18 +202,28 @@ public class JoCADv extends ApplicationAdapter {
                 Geometry geometry = (Geometry) feature;
                 if (geometry.distance(pickingRay) < distance) {
                     ((Feature) geometry).setSelected(true);
-                    if (!selected.contains(feature)){
+                    if (!selected.contains(feature)) {
                         selected.add(feature);
-                        String name = feature.getName();
-                        if (name==null) {
-                            name = feature.toString();
-                        }
-                        selection = selection + name + "\n";
+                        selectionList = selectionList + featureGetName(feature) + "\n";
                     }
                 }
             }
         }
+        if (!selected.isEmpty()) {
+            currentSelected = selected.get(0);
+            selection = "Current selection: " + featureGetName(currentSelected);
+        }
         renderFeatures();
+    }
+
+    private String featureGetName(Feature feature) {
+        String name = feature.getName();
+        if (name == null) {
+            name = feature.toString();
+            String[] s = name.split("\\.");
+            name = s[s.length-1];
+        }
+        return name;
     }
 
     public float getZoomFactor() {
@@ -239,7 +242,8 @@ public class JoCADv extends ApplicationAdapter {
             }
         }
         selected = new ArrayList<>();
-        selection = "Selection:\n";
+        selectionList = "Selection:\n";
+        selection = "Current selection: ";
         renderFeatures();
     }
 
@@ -252,7 +256,7 @@ public class JoCADv extends ApplicationAdapter {
         decal.setColor(JoColors.POINT);
         decal.setBlending(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         decal.setPosition(joPoint.getVector().getVector3());
-        points.put(joPoint,decal);
+        points.put(joPoint, decal);
     }
 
     public void commandNew() {
@@ -262,5 +266,29 @@ public class JoCADv extends ApplicationAdapter {
 
     public void commandEdit() {
         command = "Edit feature, select feature to edit";
+    }
+
+    public void selectionConfirmed() {
+        command = "OK";
+        deSelect();
+        currentSelected.setSelected(true);
+        selection = "Current selection: " + featureGetName(currentSelected);
+        renderFeatures();
+    }
+
+    public void nextSelection(float amountY) {
+        if (!selected.isEmpty()) {
+            int pos = selected.indexOf(currentSelected);
+            if (amountY > 0) {
+                pos++;
+            } else {
+                pos--;
+            }
+            if (pos < 0) pos = selected.size() - 1;
+            if (pos >= selected.size()) pos = 0;
+            currentSelected = selected.get(pos);
+            selection = "Current selection: " + featureGetName(currentSelected);
+            renderFeatures();
+        }
     }
 }

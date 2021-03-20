@@ -11,7 +11,7 @@ public class Sketch extends Feature {
     private final Set<Constraint> constraints;
     private boolean inEdit;
     private JoPlane sketchPlane;
-    private Solver solver;
+    private final Solver solver;
 
     private Sketch() {
         super();

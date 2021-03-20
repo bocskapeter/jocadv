@@ -17,7 +17,7 @@ public class JoInput implements InputProcessor {
     private static final int CLICK_RADIUS = 14;
 
 
-    private OrthographicCamera camera;
+    private final OrthographicCamera camera;
     private int rotateX = -1;
     private int rotateY = -1;
     private int clickX = -1;
@@ -30,11 +30,12 @@ public class JoInput implements InputProcessor {
     private Vector3 position = new Vector3();
     private Vector3 direction = new Vector3();
     private Vector3 newPosition = new Vector3();
-    private Vector3 centerOfRotation;
+    private final Vector3 centerOfRotation;
     private Ray rayBeforeZoom;
     private Ray rayAfterZoom;
     private Vector3 moveAfterZoom;
-    private JoCADv joCADv;
+    private final JoCADv joCADv;
+    private boolean control = false;
 
 
     public JoInput(JoCADv joCADv) {
@@ -71,6 +72,10 @@ public class JoInput implements InputProcessor {
                 break;
             case Input.Keys.E:
                 joCADv.commandEdit();
+                break;
+            case Input.Keys.CONTROL_LEFT:
+            case Input.Keys.CONTROL_RIGHT:
+                control = true;
                 break;
             case Input.Keys.ESCAPE:
                 joCADv.deSelect();
@@ -114,6 +119,12 @@ public class JoInput implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.CONTROL_LEFT:
+            case Input.Keys.CONTROL_RIGHT:
+                control = false;
+                break;
+        }
         return false;
     }
 
@@ -137,6 +148,10 @@ public class JoInput implements InputProcessor {
             float distance = pick.dst(nextPick);
             joCADv.pickFeature(getPickingLine(), distance);
             return true;
+        }
+
+        if (clickedButton == Input.Buttons.RIGHT && control) {
+            joCADv.selectionConfirmed();
         }
         position = new Vector3(camera.position);
         direction = new Vector3(camera.direction);
@@ -212,6 +227,14 @@ public class JoInput implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
+        if (control) {
+            return scrollSelection(amountX, amountY);
+        } else {
+            return scrollView(amountX, amountY);
+        }
+    }
+
+    private boolean scrollView(float amountX, float amountY) {
         rayBeforeZoom = camera.getPickRay(Gdx.input.getX(), Gdx.input.getY()).cpy();
         camera.viewportHeight = camera.viewportHeight + amountY * ZOOM_FACTOR * camera.viewportHeight;
         camera.viewportWidth = camera.viewportHeight * getRatio();
@@ -227,6 +250,11 @@ public class JoInput implements InputProcessor {
         Vector3 nextPick = camera.unproject(new Vector3(newX, newY, 0));
         float distance = pick.dst(nextPick);
         joCADv.setZoomFactor(distance);
+        return true;
+    }
+
+    private boolean scrollSelection(float amountX, float amountY) {
+        joCADv.nextSelection(amountY);
         return true;
     }
 }
