@@ -24,6 +24,10 @@ import eu.bopet.jocadv.core.features.Extrude;
 import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.features.Revolve;
 import eu.bopet.jocadv.core.features.Sketch;
+import eu.bopet.jocadv.core.geometries.JoArc;
+import eu.bopet.jocadv.core.geometries.JoCircle;
+import eu.bopet.jocadv.core.geometries.JoLine;
+import eu.bopet.jocadv.core.geometries.JoSphere;
 import eu.bopet.jocadv.core.geometries.datums.JoAxis;
 import eu.bopet.jocadv.core.geometries.datums.JoCoordinateSystem;
 import eu.bopet.jocadv.core.geometries.datums.JoPlane;
@@ -39,6 +43,7 @@ public class JoCADv extends ApplicationAdapter {
     private List<Part> parts;
     private Part currentPart;
     private List<Feature> selected;
+    private Map<String,Feature> features;
     private Feature currentSelected;
     private Map<String, Class> featureTypes;
 
@@ -69,6 +74,11 @@ public class JoCADv extends ApplicationAdapter {
 
         parts = new ArrayList<>();
         currentPart = new Part("Test");
+        features = new HashMap<>();
+        features.put(currentPart.getName(),currentPart);
+        for (Feature feature: currentPart.getFeatures()){
+            features.put(featureGetName(feature),feature);
+        }
         selected = new ArrayList<>();
         points = new HashMap<>();
         part = part + currentPart.getName();
@@ -119,13 +129,18 @@ public class JoCADv extends ApplicationAdapter {
 
     private void init() {
         featureTypes = new HashMap<>();
+        featureTypes.put("Part", Part.class);
         featureTypes.put("Datum Point", JoPoint.class);
         featureTypes.put("Datum Axis", JoAxis.class);
         featureTypes.put("Datum Plane", JoPlane.class);
         featureTypes.put("Datum CS", JoCoordinateSystem.class);
-        featureTypes.put("Sketch", Sketch.class);
         featureTypes.put("Extrude", Extrude.class);
         featureTypes.put("Revolve", Revolve.class);
+        featureTypes.put("Sketch", Sketch.class);
+        featureTypes.put("Line", JoLine.class);
+        featureTypes.put("Sphere", JoSphere.class);
+        featureTypes.put("Circle", JoCircle.class);
+        featureTypes.put("Arc", JoArc.class);
     }
 
     @Override
@@ -272,6 +287,15 @@ public class JoCADv extends ApplicationAdapter {
 
     public void commandEdit() {
         command = "Select feature to edit";
+        selectionList = "Selection:\n";
+        Iterator it = features.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            selectionList = selectionList + key  + "\n";
+        }
+        JoTextInputListener listener = new JoTextInputListener(this);
+        Gdx.input.getTextInput(listener,"Enter", "", "");
     }
 
     public void selectionConfirmed() {
@@ -300,5 +324,8 @@ public class JoCADv extends ApplicationAdapter {
             selection = "Current selection: " + featureGetName(currentSelected);
             renderFeatures();
         }
+    }
+
+    public void userInput(String text) {
     }
 }

@@ -98,4 +98,12 @@ public class JoCoordinateSystem extends Feature implements Geometry, Stretchable
         result.add(xzPlane);
         return result;
     }
+
+    @Override
+    public void setSelected(boolean selected) {
+        super.setSelected(selected);
+        for (Feature feature: getFeatures()){
+            feature.setSelected(selected);
+        }
+    }
 }
