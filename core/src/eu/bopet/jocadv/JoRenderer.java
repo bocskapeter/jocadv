@@ -1,14 +1,15 @@
 package eu.bopet.jocadv;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.geometries.JoLine;
@@ -89,17 +90,22 @@ public class JoRenderer {
         if (name==null){
             name = "plane";
         }
-        ColorAttribute colorAttribute = ColorAttribute.createFog(JoColors.PLANE_FACE);
-        Material material = new Material(colorAttribute);
+        Material material = new Material();
 
         modelBuilder.begin();
-        meshPartBuilder = modelBuilder.part(name, 1, 3, material);
+        meshPartBuilder = modelBuilder.part(name, GL20.GL_TRUE,  3, material);
         if (joPlane.isSelected()) {
             meshPartBuilder.setColor(JoColors.PLANE_SELECTED);
         } else {
             meshPartBuilder.setColor(JoColors.PLANE);
         }
+        meshPartBuilder.rect(p1, p2, p4, p3, normal);
+
+        ColorAttribute colorAttribute = ColorAttribute.createFog(JoColors.PLANE_FACE);
+        material = new Material(colorAttribute);
+        meshPartBuilder = modelBuilder.part(name, GL20.GL_TRIANGLES,  VertexAttributes.Usage.Position, material);
         meshPartBuilder.rect(p1, p3, p4, p2, normal);
+
         Model plane = modelBuilder.end();
         return new ModelInstance(plane);
     }
