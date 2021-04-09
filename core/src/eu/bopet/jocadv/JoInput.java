@@ -228,13 +228,13 @@ public class JoInput implements InputProcessor {
     @Override
     public boolean scrolled(float amountX, float amountY) {
         if (control) {
-            return scrollSelection(amountX, amountY);
+            return scrollSelection(amountY);
         } else {
-            return scrollView(amountX, amountY);
+            return scrollView(amountY);
         }
     }
 
-    private boolean scrollView(float amountX, float amountY) {
+    private boolean scrollView(float amountY) {
         rayBeforeZoom = camera.getPickRay(Gdx.input.getX(), Gdx.input.getY()).cpy();
         camera.viewportHeight = camera.viewportHeight + amountY * ZOOM_FACTOR * camera.viewportHeight;
         camera.viewportWidth = camera.viewportHeight * getRatio();
@@ -253,7 +253,7 @@ public class JoInput implements InputProcessor {
         return true;
     }
 
-    private boolean scrollSelection(float amountX, float amountY) {
+    private boolean scrollSelection(float amountY) {
         joCADv.nextSelection(amountY);
         return true;
     }

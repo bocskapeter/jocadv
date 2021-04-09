@@ -12,7 +12,7 @@ public class JoTextInputListener implements Input.TextInputListener {
 
     @Override
     public void input(String text) {
-        joCADv.userInput(text);
+        joCADv.userInput();
     }
 
     @Override

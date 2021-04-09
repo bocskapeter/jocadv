@@ -150,6 +150,7 @@ public class JoCADv extends ApplicationAdapter {
         Gdx.gl.glClearColor(JoColors.BACKGROUND.r, JoColors.BACKGROUND.g, JoColors.BACKGROUND.b, JoColors.BACKGROUND.a);
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
         Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT |
                 GL20.GL_DEPTH_BUFFER_BIT |
                 (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
@@ -167,11 +168,9 @@ public class JoCADv extends ApplicationAdapter {
         modelBatch.end();
 
         decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
-        Iterator it = points.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            JoPoint point = (JoPoint) pair.getKey();
-            Decal decal = (Decal) pair.getValue();
+        for (Map.Entry<JoPoint, Decal> joPointDecalEntry : points.entrySet()) {
+            JoPoint point = joPointDecalEntry.getKey();
+            Decal decal = joPointDecalEntry.getValue();
             if (point.isSelected()) {
                 decal.setColor(JoColors.POINT_SELECTED);
             } else {
@@ -242,10 +241,6 @@ public class JoCADv extends ApplicationAdapter {
         return name;
     }
 
-    public float getZoomFactor() {
-        return zoomFactor;
-    }
-
     public void setZoomFactor(float zoomFactor) {
         this.zoomFactor = zoomFactor;
     }
@@ -278,22 +273,18 @@ public class JoCADv extends ApplicationAdapter {
     public void commandNew() {
         command = "Select feature typ to create new";
         selectionList = "Selection:\n";
-        Iterator it = featureTypes.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            String key = (String) pair.getKey();
-            selectionList = selectionList + key  + "\n";
+        for (Map.Entry<String, Class> stringClassEntry : featureTypes.entrySet()) {
+            String key = stringClassEntry.getKey();
+            selectionList = selectionList + key + "\n";
         }
     }
 
     public void commandEdit() {
         command = "Select feature to edit";
         selectionList = "Selection:\n";
-        Iterator it = features.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            String key = (String) pair.getKey();
-            selectionList = selectionList + key  + "\n";
+        for (Map.Entry<String, Feature> stringFeatureEntry : features.entrySet()) {
+            String key = stringFeatureEntry.getKey();
+            selectionList = selectionList + key + "\n";
         }
         JoTextInputListener listener = new JoTextInputListener(this);
         Gdx.input.getTextInput(listener,"Enter", "", "");
@@ -325,8 +316,5 @@ public class JoCADv extends ApplicationAdapter {
             selection = "Current selection: " + featureGetName(currentSelected);
             renderFeatures();
         }
-    }
-
-    public void userInput(String text) {
     }
 }
