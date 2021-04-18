@@ -5,9 +5,10 @@ import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.vector.JoVector;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class JoPoint extends Feature implements Geometry {
+public class JoPoint extends Feature implements Geometry, Serializable {
 
     public static final JoPoint ORIGIN = new JoPoint("Point origin", JoVector.ZERO);
 

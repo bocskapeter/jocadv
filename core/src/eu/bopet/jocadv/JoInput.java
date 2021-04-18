@@ -14,7 +14,7 @@ public class JoInput implements InputProcessor {
 
     private static final float ZOOM_FACTOR = 0.1f;
     private static final float ROTATE_FACTOR = 0.5f;
-    private static final int CLICK_RADIUS = 14;
+    private static final int CLICK_RADIUS = 4;
 
 
     private final OrthographicCamera camera;

@@ -2,6 +2,7 @@ package eu.bopet.jocadv;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.math.Vector3;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Part;
@@ -34,7 +37,9 @@ import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
+import java.io.File;
 import java.util.*;
+import java.util.logging.FileHandler;
 
 public class JoCADv extends ApplicationAdapter {
 
@@ -67,10 +72,14 @@ public class JoCADv extends ApplicationAdapter {
     private DecalBatch decalBatch;
     private float zoomFactor = 1;
 
+    private ModelInstance objModel;
+
     @Override
     public void create() {
 
         init();
+
+        getObjModel();
 
         parts = new ArrayList<>();
         currentPart = new Part("Test");
@@ -111,6 +120,13 @@ public class JoCADv extends ApplicationAdapter {
 
         renderer = new JoRenderer(this, currentPart.getFeatures(), cam);
         renderFeatures();
+    }
+
+    private void getObjModel() {
+        ObjLoader objLoader = new ObjLoader();
+        FileHandle fileHandle = Gdx.files.internal("cavity.obj");
+        Model model = objLoader.loadModel(fileHandle);
+        objModel = new ModelInstance(model);
     }
 
     private void generateFonts() {
@@ -165,6 +181,9 @@ public class JoCADv extends ApplicationAdapter {
         for (ModelInstance modelInstance : renderer.getModelInstances()) {
             modelBatch.render(modelInstance, environment);
         }
+        if(objModel!=null){
+            modelBatch.render(objModel, environment);
+        }
         modelBatch.end();
 
         decalBatch = new DecalBatch(new CameraGroupStrategy(cam));
@@ -177,7 +196,7 @@ public class JoCADv extends ApplicationAdapter {
                 decal.setColor(JoColors.POINT);
             }
             decal.lookAt(cam.position, cam.up);
-            decal.setScale(zoomFactor * 0.7f);
+            decal.setScale(zoomFactor * 1.7f);
             decalBatch.add(decal);
         }
         decalBatch.flush();
