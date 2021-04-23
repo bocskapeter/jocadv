@@ -1,19 +1,14 @@
 package eu.bopet.jocadv.core;
 
 import eu.bopet.jocadv.core.features.Feature;
-import eu.bopet.jocadv.core.geometries.datums.JoAxis;
 import eu.bopet.jocadv.core.geometries.datums.JoCoordinateSystem;
-import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 import eu.bopet.jocadv.core.vector.JoVector;
-import eu.bopet.jocadv.core.vector.Value;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
-import org.apache.commons.math3.geometry.euclidean.threed.Plane;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Part extends Feature implements Geometry {
 
@@ -31,7 +26,7 @@ public class Part extends Feature implements Geometry {
         max = new JoVector(new Vector3D(13, 14, 15));
 
         addFeature(JoCoordinateSystem.DEFAULT);
-        addFeature(new JoPoint(new JoVector(new Vector3D(1,1,1))));
+        addFeature(new JoPoint(new JoVector(new Vector3D(1, 1, 1))));
         stretch();
     }
 

@@ -3,6 +3,7 @@ package eu.bopet.jocadv;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,9 +38,10 @@ import eu.bopet.jocadv.core.geometries.datums.JoPlane;
 import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
-import java.io.File;
-import java.util.*;
-import java.util.logging.FileHandler;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JoCADv extends ApplicationAdapter {
 
@@ -48,7 +50,7 @@ public class JoCADv extends ApplicationAdapter {
     private List<Part> parts;
     private Part currentPart;
     private List<Feature> selected;
-    private Map<String,Feature> features;
+    private Map<String, Feature> features;
     private Feature currentSelected;
     private Map<String, Class> featureTypes;
 
@@ -74,6 +76,8 @@ public class JoCADv extends ApplicationAdapter {
 
     private ModelInstance objModel;
 
+    DirectionalLight light;
+
     @Override
     public void create() {
 
@@ -84,17 +88,21 @@ public class JoCADv extends ApplicationAdapter {
         parts = new ArrayList<>();
         currentPart = new Part("Test");
         features = new HashMap<>();
-        features.put(currentPart.getName(),currentPart);
-        for (Feature feature: currentPart.getFeatures()){
-            features.put(featureGetName(feature),feature);
+        features.put(currentPart.getName(), currentPart);
+        for (Feature feature : currentPart.getFeatures()) {
+            features.put(featureGetName(feature), feature);
         }
         selected = new ArrayList<>();
         points = new HashMap<>();
         part = part + currentPart.getName();
 
         environment = new Environment();
+        Vector3 lightDirection = new Vector3(-1f, -0.8f, -0.2f);
+        Color lightColor = new Color(0.8f, 0.9f, 0.9f, 1.0f);
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        light = new DirectionalLight();
+        light.set(lightColor, lightDirection);
+        environment.add(light);
 
         spriteBatch = new SpriteBatch();
 
@@ -173,6 +181,9 @@ public class JoCADv extends ApplicationAdapter {
 
 
         cam.update();
+        Vector3 right = cam.up.cpy().crs(cam.direction.cpy()).scl(-1.0f);
+        Vector3 lightDirection = right.add(cam.direction.cpy()).sub(cam.up.cpy());
+        light.setDirection(lightDirection);
 
         Gdx.gl.glLineWidth(2.0f);
 
@@ -181,7 +192,7 @@ public class JoCADv extends ApplicationAdapter {
         for (ModelInstance modelInstance : renderer.getModelInstances()) {
             modelBatch.render(modelInstance, environment);
         }
-        if(objModel!=null){
+        if (objModel != null) {
             modelBatch.render(objModel, environment);
         }
         modelBatch.end();
@@ -255,7 +266,7 @@ public class JoCADv extends ApplicationAdapter {
         if (name == null) {
             name = feature.toString();
             String[] s = name.split("\\.");
-            name = s[s.length-1];
+            name = s[s.length - 1];
         }
         return name;
     }
@@ -306,7 +317,7 @@ public class JoCADv extends ApplicationAdapter {
             selectionList = selectionList + key + "\n";
         }
         JoTextInputListener listener = new JoTextInputListener(this);
-        Gdx.input.getTextInput(listener,"Enter", "", "");
+        Gdx.input.getTextInput(listener, "Enter", "", "");
     }
 
     public void selectionConfirmed() {
@@ -328,7 +339,7 @@ public class JoCADv extends ApplicationAdapter {
             if (pos < 0) pos = selected.size() - 1;
             if (pos >= selected.size()) pos = 0;
             currentSelected = selected.get(pos);
-            for (Feature feature: selected){
+            for (Feature feature : selected) {
                 feature.setSelected(false);
             }
             currentSelected.setSelected(true);
