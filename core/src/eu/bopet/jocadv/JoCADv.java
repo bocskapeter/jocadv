@@ -24,10 +24,7 @@ import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.math.Vector3;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Part;
-import eu.bopet.jocadv.core.features.Extrude;
-import eu.bopet.jocadv.core.features.Feature;
-import eu.bopet.jocadv.core.features.Revolve;
-import eu.bopet.jocadv.core.features.Sketch;
+import eu.bopet.jocadv.core.features.*;
 import eu.bopet.jocadv.core.geometries.JoArc;
 import eu.bopet.jocadv.core.geometries.JoCircle;
 import eu.bopet.jocadv.core.geometries.JoLine;
@@ -83,8 +80,6 @@ public class JoCADv extends ApplicationAdapter {
 
         init();
 
-        getObjModel();
-
         parts = new ArrayList<>();
         currentPart = new Part("Test");
         features = new HashMap<>();
@@ -95,6 +90,8 @@ public class JoCADv extends ApplicationAdapter {
         selected = new ArrayList<>();
         points = new HashMap<>();
         part = part + currentPart.getName();
+
+        getObjModel();
 
         environment = new Environment();
         Vector3 lightDirection = new Vector3(-1f, -0.8f, -0.2f);
@@ -131,10 +128,16 @@ public class JoCADv extends ApplicationAdapter {
     }
 
     private void getObjModel() {
-        ObjLoader objLoader = new ObjLoader();
+        //ObjLoader objLoader = new ObjLoader();
         FileHandle fileHandle = Gdx.files.internal("cavity.obj");
-        Model model = objLoader.loadModel(fileHandle);
-        objModel = new ModelInstance(model);
+        List<Body> bodies = Body.importModel(fileHandle);
+        for (Body body : bodies){
+            for (Feature point : body.getPoints()){
+                currentPart.addFeature(point);
+            }
+        }
+        //Model model = objLoader.loadModel(fileHandle);
+        //objModel = new ModelInstance(model);
     }
 
     private void generateFonts() {
