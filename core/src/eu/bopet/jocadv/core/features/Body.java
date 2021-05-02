@@ -1,8 +1,6 @@
 package eu.bopet.jocadv.core.features;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.g3d.Model;
 import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 import eu.bopet.jocadv.core.vector.JoVector;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -15,13 +13,13 @@ import java.util.List;
 
 public class Body extends Feature {
     private List<Feature> points;
+    private List<Feature> surfaces;
     private List<Feature> faces;
-    private List<Feature> edges;
 
     public Body() {
         points = new ArrayList<>();
+        surfaces = new ArrayList<>();
         faces = new ArrayList<>();
-        edges = new ArrayList<>();
     }
 
     public List<Feature> getPoints() {
@@ -46,7 +44,7 @@ public class Body extends Feature {
                     continue;
                 } else if ((firstChar = tokens[0].toLowerCase().charAt(0)) == '#') {
                     continue;
-                }else if (firstChar == 'v') {
+                } else if (firstChar == 'v') {
                     if (tokens[0].length() == 1) {
                         JoPoint joPoint = new JoPoint(new JoVector(new Vector3D(
                                 Double.parseDouble(tokens[1]),
@@ -61,7 +59,25 @@ public class Body extends Feature {
                         normals.add(joVector);
                     }
                 } else if (firstChar == 'f') {
+                    List<Integer> ps = new ArrayList<>();
+                    List<Integer> ns = new ArrayList<>();
+                    for (String token : tokens) {
+                        if (token.equals("f")) continue;
+                        String[] parts = token.split("/");
+                        ps.add(Integer.parseInt(parts[0]));
+                        if (parts.length>2){
+                            int i = Integer.parseInt(parts[2]);
+                            if (!ns.contains(i))ns.add(i);
+                        }
+                    }
+                    if (ns.size()==1) {
+                        for (Integer integer : ps){
+                            //TODO: create Face
 
+                        }
+                    } else if (ns.size()>1){
+                        //TODO: create Surface
+                    }
                 }
             }
             if (!bodies.contains(body)) bodies.add(body);

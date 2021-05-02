@@ -2,11 +2,18 @@ package eu.bopet.jocadv.core.features;
 
 import eu.bopet.jocadv.core.vector.JoVector;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Face extends Feature{
-    private List<Feature> points;
-    private List<JoVector> normals;
-    private List<Feature> edges;
+public class Face extends Feature {
+    private List<Edge> edges;
+    private JoVector normal;
 
+    public Face() {
+        edges = new ArrayList<>();
+    }
+
+    public List<Edge> getEdges() {
+        return edges;
+    }
 }

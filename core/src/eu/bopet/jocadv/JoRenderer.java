@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import eu.bopet.jocadv.core.features.Edge;
+import eu.bopet.jocadv.core.features.Face;
 import eu.bopet.jocadv.core.features.Feature;
 import eu.bopet.jocadv.core.geometries.JoLine;
 import eu.bopet.jocadv.core.geometries.datums.JoAxis;
@@ -61,10 +63,16 @@ public class JoRenderer {
             if (feature instanceof JoLine) {
                 JoLine joLine = (JoLine) feature;
                 modelInstances.add(renderLine(joLine.getP1().getVector().getVector3(),
-                        joLine.getP2().getVector().getVector3(), Color.BROWN));
+                        joLine.getP2().getVector().getVector3(), JoColors.LINE));
             }
             if (feature instanceof JoPlane) {
                 modelInstances.add(renderPlane((JoPlane) feature));
+            }
+            if (feature instanceof Face) {
+                for (Edge edge: ((Face)feature).getEdges()){
+                    modelInstances.add(renderLine(edge.getPointA().getVector().getVector3(),
+                            edge.getPointB().getVector().getVector3(), JoColors.EDGE));
+                }
             }
         }
     }

@@ -23,4 +23,7 @@ public class JoColors {
     public static final Color LINE = new Color(62f/256f,45f/256f,169f/256f,1);
     public static final Color LINE_SELECTED = new Color(256f/256f,113f/256f,0f/256f,1);
 
+    public static final Color EDGE = new Color(62f/256f,45f/256f,169f/256f,1);
+    public static final Color EDGE_SELECTED = new Color(256f/256f,113f/256f,0f/256f,1);
+
 }

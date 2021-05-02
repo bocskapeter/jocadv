@@ -128,7 +128,7 @@ public class JoCADv extends ApplicationAdapter {
     }
 
     private void getObjModel() {
-        //ObjLoader objLoader = new ObjLoader();
+        ObjLoader objLoader = new ObjLoader();
         FileHandle fileHandle = Gdx.files.internal("cavity.obj");
         List<Body> bodies = Body.importModel(fileHandle);
         for (Body body : bodies){
@@ -136,8 +136,8 @@ public class JoCADv extends ApplicationAdapter {
                 currentPart.addFeature(point);
             }
         }
-        //Model model = objLoader.loadModel(fileHandle);
-        //objModel = new ModelInstance(model);
+        Model model = objLoader.loadModel(fileHandle);
+        objModel = new ModelInstance(model);
     }
 
     private void generateFonts() {
