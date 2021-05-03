@@ -135,6 +135,9 @@ public class JoCADv extends ApplicationAdapter {
             for (Feature point : body.getPoints()){
                 currentPart.addFeature(point);
             }
+            for ( Feature face : body.getFaces()){
+                currentPart.addFeature(face);
+            }
         }
         Model model = objLoader.loadModel(fileHandle);
         objModel = new ModelInstance(model);

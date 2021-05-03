@@ -9,6 +9,11 @@ public class Face extends Feature {
     private List<Edge> edges;
     private JoVector normal;
 
+    public Face(List<Edge> edges, JoVector normal) {
+        this.edges = edges;
+        this.normal = normal;
+    }
+
     public Face() {
         edges = new ArrayList<>();
     }

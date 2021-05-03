@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Body extends Feature {
-    private List<Feature> points;
+    private List<JoPoint> points;
     private List<Feature> surfaces;
     private List<Feature> faces;
 
@@ -22,8 +22,12 @@ public class Body extends Feature {
         faces = new ArrayList<>();
     }
 
-    public List<Feature> getPoints() {
+    public List<JoPoint> getPoints() {
         return points;
+    }
+
+    public List<Feature> getFaces() {
+        return faces;
     }
 
     public static List<Body> importModel(FileHandle file) {
@@ -71,11 +75,21 @@ public class Body extends Feature {
                         }
                     }
                     if (ns.size()==1) {
-                        for (Integer integer : ps){
-                            //TODO: create Face
-
-                        }
+                        JoPoint joPointA = body.points.get(ps.get(0)-1);
+                        JoPoint joPointB = body.points.get(ps.get(1)-1);
+                        JoPoint joPointC = body.points.get(ps.get(2)-1);
+                        Edge edge1 = new Edge(joPointA,joPointB);
+                        Edge edge2 = new Edge(joPointB,joPointC);
+                        Edge edge3 = new Edge(joPointC,joPointA);
+                        List<Edge> edges = new ArrayList<>();
+                        edges.add(edge1);
+                        edges.add(edge2);
+                        edges.add(edge3);
+                        JoVector normal = normals.get(ns.get(0)-1);
+                        Face face = new Face(edges,normal);
+                        body.faces.add(face);
                     } else if (ns.size()>1){
+                        System.out.println("surface :" + line);
                         //TODO: create Surface
                     }
                 }
