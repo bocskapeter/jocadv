@@ -299,11 +299,11 @@ public class JoCADv extends ApplicationAdapter {
     }
 
     public void addPoint(JoPoint joPoint) {
-        Decal decal = Decal.newDecal(1, 1, new TextureRegion(texture));
+        /*Decal decal = Decal.newDecal(1, 1, new TextureRegion(texture));
         decal.setColor(JoColors.POINT);
         decal.setBlending(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         decal.setPosition(joPoint.getVector().getVector3());
-        points.put(joPoint, decal);
+        points.put(joPoint, decal);*/
     }
 
     public void commandNew() {

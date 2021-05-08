@@ -94,6 +94,7 @@ public class Body extends Feature {
                     }
                 }
             }
+            System.out.println("points :" + body.getPoints().size());
             if (!bodies.contains(body)) bodies.add(body);
 
         } catch (IOException e) {
