@@ -1,20 +1,19 @@
 package eu.bopet.jocadv.core.constraints;
 
-import eu.bopet.jocadv.core.Geometry;
+import eu.bopet.jocadv.core.geometries.datums.JoPlane;
+import eu.bopet.jocadv.core.geometries.datums.JoPoint;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import java.util.List;
 
 public final class PointOnPlane extends Const implements Constraint {
-
-
-    @Override
-    public List<Geometry> getGeometries() {
-        return null;
-    }
+    private JoPoint point;
+    private JoPlane plane;
 
     @Override
     public double getValue() {
-        return 0;
+        Vector3D projectedPoint = (Vector3D) plane.getPlane().project(point.getVector().getVector3D());
+        return projectedPoint.distance(point.getVector().getVector3D());
     }
 
     @Override

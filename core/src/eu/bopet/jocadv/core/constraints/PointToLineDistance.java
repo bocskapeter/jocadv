@@ -6,12 +6,6 @@ import java.util.List;
 
 public final class PointToLineDistance extends Const implements Constraint {
 
-
-    @Override
-    public List<Geometry> getGeometries() {
-        return null;
-    }
-
     @Override
     public double getValue() {
         return 0;

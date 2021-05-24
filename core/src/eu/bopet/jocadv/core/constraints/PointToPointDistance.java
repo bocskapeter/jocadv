@@ -1,16 +1,14 @@
 package eu.bopet.jocadv.core.constraints;
 
 import eu.bopet.jocadv.core.Geometry;
+import eu.bopet.jocadv.core.geometries.datums.JoPoint;
 
 import java.util.List;
 
 public class PointToPointDistance extends Const implements Constraint {
-
-
-    @Override
-    public List<Geometry> getGeometries() {
-        return null;
-    }
+    private JoPoint point1;
+    private JoPoint point2;
+    private double distance;
 
     @Override
     public double getValue() {
