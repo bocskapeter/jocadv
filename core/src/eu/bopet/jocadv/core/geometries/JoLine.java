@@ -9,7 +9,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Line;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JoLine extends Feature implements Geometry {
+public class JoLine extends Feature implements Geometry, SketchGeometry {
     private final Line line;
     private JoPoint p1;
     private JoPoint p2;
@@ -47,5 +47,10 @@ public class JoLine extends Feature implements Geometry {
         result.add(p1);
         result.add(p2);
         return result;
+    }
+
+    @Override
+    public int length() {
+        return 6;
     }
 }

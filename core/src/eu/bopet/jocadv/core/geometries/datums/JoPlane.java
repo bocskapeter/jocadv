@@ -3,6 +3,7 @@ package eu.bopet.jocadv.core.geometries.datums;
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.Stretchable;
 import eu.bopet.jocadv.core.features.Feature;
+import eu.bopet.jocadv.core.geometries.SketchGeometry;
 import eu.bopet.jocadv.core.vector.JoVector;
 import eu.bopet.jocadv.core.vector.Value;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
@@ -12,7 +13,7 @@ import org.apache.commons.math3.util.FastMath;
 
 import java.util.List;
 
-public class JoPlane extends Feature implements Geometry, Stretchable {
+public class JoPlane extends Feature implements Geometry, Stretchable, SketchGeometry {
     public static final JoPlane XY = new JoPlane("Plane xy", new Plane(Vector3D.PLUS_K, Value.TOLERANCE));
     public static final JoPlane XZ = new JoPlane("Plane xz", new Plane(Vector3D.PLUS_J, Value.TOLERANCE));
     public static final JoPlane YZ = new JoPlane("Plane yz", new Plane(Vector3D.PLUS_I, Value.TOLERANCE));
@@ -114,5 +115,10 @@ public class JoPlane extends Feature implements Geometry, Stretchable {
     @Override
     public List<Feature> getFeatures() {
         return null;
+    }
+
+    @Override
+    public int length() {
+        return 4;
     }
 }

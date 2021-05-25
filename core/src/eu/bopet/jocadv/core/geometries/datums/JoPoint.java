@@ -2,13 +2,14 @@ package eu.bopet.jocadv.core.geometries.datums;
 
 import eu.bopet.jocadv.core.Geometry;
 import eu.bopet.jocadv.core.features.Feature;
+import eu.bopet.jocadv.core.geometries.SketchGeometry;
 import eu.bopet.jocadv.core.vector.JoVector;
 import org.apache.commons.math3.geometry.euclidean.threed.Line;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class JoPoint extends Feature implements Geometry, Serializable {
+public class JoPoint extends Feature implements Geometry, Serializable, SketchGeometry {
 
     public static final JoPoint ORIGIN = new JoPoint("Point origin", JoVector.ZERO);
 
@@ -35,5 +36,10 @@ public class JoPoint extends Feature implements Geometry, Serializable {
     @Override
     public List<Feature> getFeatures() {
         return null;
+    }
+
+    @Override
+    public int length() {
+        return 3;
     }
 }

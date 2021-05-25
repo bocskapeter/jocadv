@@ -17,7 +17,7 @@ public final class PointOnPlane extends Const implements Constraint {
     }
 
     @Override
-    public List<Double> getDerivatives(double interval) {
+    public List<GeometryDerivatives> getDerivatives() {
         return null;
     }
 }

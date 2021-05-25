@@ -9,9 +9,8 @@ public interface Constraint {
     double getValue();
 
     /**
-     * @param interval interval size
      * @return partial derivative values - f'(xn)
      */
-    List<Double> getDerivatives(double interval);
+    List<GeometryDerivatives> getDerivatives();
 
 }
