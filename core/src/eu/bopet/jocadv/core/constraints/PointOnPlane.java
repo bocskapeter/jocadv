@@ -12,8 +12,7 @@ public final class PointOnPlane extends Const implements Constraint {
 
     @Override
     public double getValue() {
-        Vector3D projectedPoint = (Vector3D) plane.getPlane().project(point.getVector().getVector3D());
-        return projectedPoint.distance(point.getVector().getVector3D());
+        return plane.getPlane().getOffset(point.getVector().getVector3D());
     }
 
     @Override
